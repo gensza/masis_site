@@ -27,7 +27,7 @@
                                                 <select name="filter" id="category" class="form-control">
                                                     <option selected disabled>- Select category - </option>
                                                     <?php foreach ($category as $c) : ?>
-                                                    <option value="<?= $c['id_qty'] ?>"><?= $c['category'] ?></option>
+                                                        <option value="<?= $c['id_qty'] ?>"><?= $c['category'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -45,7 +45,7 @@
                                                 <select name="filter" id="category" class="form-control" required>
                                                     <option value="" selected disabled>- Select PT - </option>
                                                     <?php foreach ($pt as $pt) : ?>
-                                                    <option value="<?= $pt['id_pt'] ?>"><?= $pt['alias'] ?></option>
+                                                        <option value="<?= $pt['id_pt'] ?>"><?= $pt['alias'] ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
@@ -60,8 +60,7 @@
 
                             <div class="row justify-content-between mt-3 mb-3">
                                 <h4 class="header-title ml-2">Data Table</h4>
-                                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalAssets"><i
-                                        class="mdi mdi-plus"></i> Add Assets</button>
+                                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalAssets"><i class="mdi mdi-plus"></i> Add Assets</button>
                             </div>
                             <table id="scroll-horizontal-datatable" class="table table-striped">
                                 <thead>
@@ -83,67 +82,62 @@
                                 <tbody>
                                     <?php $no = 1  ?>
                                     <?php foreach ($assets as $a) : ?>
-                                    <tr>
-                                        <td><?= $no++  ?></td>
-                                        <td><?= $a['kode_assets'] ?></td>
-                                        <td><?= $a['merk'] ?></td>
-                                        <td><?= $a['category'] ?></td>
-                                        <td><?= $a['serial_number'] ?></td>
-                                        <td><?= $a['alias'] ?></td>
-                                        <td><?= $a['lokasi'] ?></td>
-                                        <td><?php if ($a['idle'] == 'on') {
+                                        <tr>
+                                            <td><?= $no++  ?></td>
+                                            <td><?= $a['kode_assets'] ?></td>
+                                            <td><?= $a['merk'] ?></td>
+                                            <td><?= $a['category'] ?></td>
+                                            <td><?= $a['serial_number'] ?></td>
+                                            <td><?= $a['alias'] ?></td>
+                                            <td><?= $a['lokasi'] ?></td>
+                                            <td><?php if ($a['idle'] == 'on') {
                                                     echo "Ya";
                                                 } ?>
-                                        </td>
-                                        <td><?= $a['tgl_pembelian'] ?></td>
-                                        <td>
-                                            <?php
+                                            </td>
+                                            <td><?= $a['tgl_pembelian'] ?></td>
+                                            <td>
+                                                <?php
                                                 if ($a['kondisi'] == 1) {
                                                 ?>
-                                            <p>BAIK</p>
-                                            <?php
+                                                    <p>BAIK</p>
+                                                <?php
                                                 } else {
                                                 ?>
-                                            <p>RUSAK</p>
-                                            <?php
+                                                    <p>RUSAK</p>
+                                                <?php
                                                 }
                                                 ?>
-                                        </td>
-                                        <td>
-                                            <?php
+                                            </td>
+                                            <td>
+                                                <?php
                                                 if ($a['status_unit'] == 1 and $a['kondisi'] == 1) {
                                                 ?>
-                                            <p style="color: green;"><b>Tersedia!</b></p>
-                                            <?php
+                                                    <p style="color: green;"><b>Tersedia!</b></p>
+                                                <?php
                                                 } elseif ($a['kondisi'] == 0) {
                                                 ?>
-                                            <p style="color: red;"><b>Rusak</b></p>
-                                            <?php
+                                                    <p style="color: red;"><b>Rusak</b></p>
+                                                <?php
                                                 } else {
                                                 ?>
-                                            <p style="color: blue;"><b>Dipinjam</b></p>
-                                            <?php
+                                                    <p style="color: blue;"><b>Dipinjam</b></p>
+                                                <?php
                                                 }
                                                 ?>
-                                        </td>
-                                        <td>
-                                            <div class="row">
-                                                <a id="detail_aset" class="btn btn-sm btn-info mr-2" data-toggle="modal"
-                                                    data-target="#modal-detail-aset" data-cpu="<?= $a['cpu'] ?>"
-                                                    data-ram="<?= $a['ram'] ?>" data-storage="<?= $a['storage'] ?>"
-                                                    data-gpu="<?= $a['gpu'] ?>" data-display="<?= $a['display'] ?>"
-                                                    data-lain="<?= $a['lain'] ?>"><i class="mdi mdi-eye"
-                                                        style="color: white;"></i></a>
-                                                <?php
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <a id="detail_aset" class="btn btn-sm btn-info mr-2" data-toggle="modal" data-target="#modal-detail-aset" data-cpu="<?= $a['cpu'] ?>" data-ram="<?= $a['ram'] ?>" data-storage="<?= $a['storage'] ?>" data-gpu="<?= $a['gpu'] ?>" data-display="<?= $a['display'] ?>" data-lain="<?= $a['lain'] ?>"><i class="mdi mdi-eye" style="color: white;"></i></a>
+                                                    <?php
                                                     if ($a['status_unit'] == 1) {
                                                     ?>
-                                                <div class="row">
-                                                    <?= anchor('DataAssets/editAssets/' . $a['id_assets'], '<button class="btn btn-sm btn-warning ml-1"><i
+                                                        <div class="row">
+                                                            <?= anchor('DataAssets/editAssets/' . $a['id_assets'], '<button class="btn btn-sm btn-warning ml-1"><i
                                                         class="mdi mdi-lead-pencil"></i></button>') ?>
-                                                    <?php
+                                                            <?php
                                                             if ($a['kondisi'] == 1) {
                                                             ?>
-                                                    <button onclick="Swal.fire({
+                                                                <button onclick="Swal.fire({
                                                         title: 'Hapus Aset?',
                                                         showCancelButton: true,
                                                         confirmButtonColor: '#d33',
@@ -154,20 +148,20 @@
                                                             window.location.href='DataAssets/deleteAssets/<?= $a['id_assets'] . '/' . $a['qty_id'] ?>';
                                                             }
                                                         })" class="btn btn-sm btn-danger ml-1">
-                                                        <i class="mdi mdi-trash-can-outline"></i>
-                                                    </button>
-                                                    <?php
+                                                                    <i class="mdi mdi-trash-can-outline"></i>
+                                                                </button>
+                                                            <?php
                                                             } else {
                                                             }
                                                             ?>
-                                                </div>
-                                                <?php
+                                                        </div>
+                                                    <?php
                                                     } else {
                                                     }
                                                     ?>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -189,32 +183,39 @@
                 <form action="<?= base_url('DataAssets/addAssets') ?>" method="POST">
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-3">
                                 <label for="">Category</label>
                                 <select name="category" id="category" class="form-control" required>
                                     <option value="" selected disabled>- Select category - </option>
                                     <?php foreach ($category as $c) : ?>
-                                    <option value="<?= $c['id_qty'] ?>"><?= $c['category'] ?></option>
+                                        <option value="<?= $c['id_qty'] ?>"><?= $c['category'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <div class="form-group col-6">
+                            <div class="form-group col-3">
                                 <label for="">Merk</label>
                                 <input type="text" class="form-control" id="merk" name="merk" placeholder="Merk">
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="">No PO</label>
+                                <input type="text" class="form-control" id="no_po" name="no_po" placeholder="No PO">
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="">Harga</label>
+                                <input type="number" class="form-control" id="harga" name="harga" placeholder="Rp.">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group mb-1 col-4">
                                 <label for="">Serial Number</label>
-                                <input type="text" class="form-control" id="serial_number" name="serial_number"
-                                    placeholder="Serial Number">
+                                <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="Serial Number">
                             </div>
                             <div class="form-group mb-1 col-4">
                                 <label for="">PT</label>
                                 <select name="id_pt" id="id_pt" class="form-control" required>
                                     <option value="" selected disabled>- Select PT - </option>
                                     <?php foreach ($pt_add as $p) : ?>
-                                    <option value="<?= $p['id_pt'] ?>"><?= $p['alias'] ?></option>
+                                        <option value="<?= $p['id_pt'] ?>"><?= $p['alias'] ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -236,8 +237,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group mb-1 col-6">
-                                    <input type="text" class="form-control" id="Storage" name="storage"
-                                        placeholder="Storage">
+                                    <input type="text" class="form-control" id="Storage" name="storage" placeholder="Storage">
                                 </div>
                                 <div class="form-group mb-1 col-6">
                                     <input type="text" class="form-control" id="GPU" name="gpu" placeholder="GPU">
@@ -245,20 +245,17 @@
                             </div>
                             <div class="row">
                                 <div class="form-group mb-1 col-6">
-                                    <input type="text" class="form-control" id="Display" name="display"
-                                        placeholder="Display">
+                                    <input type="text" class="form-control" id="Display" name="display" placeholder="Display">
                                 </div>
                                 <div class="form-group mb-1 col-6">
-                                    <input type="text" class="form-control" id="Lain-lain" name="lain"
-                                        placeholder="Lain-lain ..">
+                                    <input type="text" class="form-control" id="Lain-lain" name="lain" placeholder="Lain-lain ..">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group mt-2 col-6">
                                 <label for="">Tanggal Pembelian</label>
-                                <input type="date" class="form-control" id="tgl_pembelian" name="tgl_pembelian"
-                                    placeholder="Tgl Pembelian">
+                                <input type="date" class="form-control" id="tgl_pembelian" name="tgl_pembelian" placeholder="Tgl Pembelian">
                             </div>
                             <div class="form-group mt-2 col-6">
                                 <label for="">Kondisi</label>
@@ -301,8 +298,7 @@
                             </div>
                             <div class="form-group col-7">
                                 <label for="">Keterangan Fisik</label>
-                                <textarea type="text" class="form-control" id="ket_fisik" name="ket_fisik" rows="3"
-                                    placeholder="Ket fisik..">
+                                <textarea type="text" class="form-control" id="ket_fisik" name="ket_fisik" rows="3" placeholder="Ket fisik..">
                                 </textarea>
                             </div>
                         </div>

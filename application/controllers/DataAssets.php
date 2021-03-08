@@ -119,6 +119,8 @@ class DataAssets extends CI_Controller
                 'idle' => $this->input->post('idle'),
                 'fisik' => $this->input->post('fisik'),
                 'ket_fisik' => $this->input->post('ket_fisik'),
+                'no_po' => $this->input->post('no_po'),
+                'harga' => $this->input->post('harga'),
                 'status_unit' => 1
             ];
             $this->db->insert('tb_assets', $data);
@@ -180,7 +182,9 @@ class DataAssets extends CI_Controller
             'status_kondisi' => $this->input->post('status_kondisi'),
             'idle' => $this->input->post('idle'),
             'fisik' => $this->input->post('fisik'),
-            'ket_fisik' => $this->input->post('ket_fisik')
+            'ket_fisik' => $this->input->post('ket_fisik'),
+            'no_po' => $this->input->post('no_po'),
+            'harga' => $this->input->post('harga')
         ];
 
         $cek = $this->db->get_where('tb_assets', ['id_assets' => $data['id_assets']])->row_array();
@@ -215,6 +219,8 @@ class DataAssets extends CI_Controller
         $this->db->set('idle', $data['idle']);
         $this->db->set('fisik', $data['fisik']);
         $this->db->set('ket_fisik', $data['ket_fisik']);
+        $this->db->set('no_po', $data['no_po']);
+        $this->db->set('harga', $data['harga']);
         $this->db->where('id_assets', $data['id_assets']);
         $this->db->update('tb_assets');
 
