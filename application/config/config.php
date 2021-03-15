@@ -28,7 +28,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // $base_url .=     str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 // $config['base_url'] = $base_url;
 
-$config['base_url'] = 'http://localhost:8080/masis/';
+$config['base_url'] = 'http://localhost/masis/';
 
 /*
 |--------------------------------------------------------------------------

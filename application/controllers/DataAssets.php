@@ -11,6 +11,8 @@ class DataAssets extends CI_Controller
         if (!$this->session->userdata('email')) {
             redirect('Users');
         }
+
+        require_once APPPATH . 'third_party/dompdf/dompdf_config.inc.php';
     }
 
     public function index()
@@ -288,5 +290,75 @@ class DataAssets extends CI_Controller
         $this->db->update('tb_qty_assets');
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">category has been updated successfully!</div>');
         $this->qtyAssets();
+    }
+
+    public function reportDataAssets()
+    {
+        $dompdf = new Dompdf();
+
+        $data['data_post'] = [
+            'pilih_pt' => $this->input->post('pilih_pt'),
+            'pilih_category' => $this->input->post('pilih_category'),
+            'pilih_kondisi' => $this->input->post('pilih_kondisi'),
+            'cari_lokasi' => $this->input->post('cari_lokasi'),
+            'cb_idle' => $this->input->post('cb_idle'),
+            'status_unit' => $this->input->post('status_unit')
+        ];
+
+        // ket
+        $this->db->select('alias, category');
+        $this->db->from('tb_assets');
+        $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+        if ($data['data_post']['pilih_pt'] != 'Y') {
+            $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+        } else {
+        }
+        if ($data['data_post']['pilih_category'] != 'Y') {
+            $this->db->where('qty_id', $data['data_post']['pilih_category']);
+        } else {
+        }
+        $data['data_assets_ket'] = $this->db->get()->row_array();
+
+        // table
+        $this->db->select('*');
+        $this->db->from('tb_assets');
+        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+        $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+        
+        if ($data['data_post']['pilih_pt'] != 'Y') {
+            $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+        } else {
+        }
+        if ($data['data_post']['pilih_category'] != 'Y') {
+            $this->db->where('qty_id', $data['data_post']['pilih_category']);
+        } else {
+        }
+        if ($data['data_post']['pilih_kondisi'] != 'Y') {
+            $this->db->where('kondisi', $data['data_post']['pilih_kondisi']);
+        } else {
+        }
+        if ($data['data_post']['cari_lokasi'] != NULL) {
+            $this->db->like('lokasi', $data['data_post']['cari_lokasi'], 'both');
+        } else {
+        }
+        if ($data['data_post']['cb_idle'] != NULL) {
+            $this->db->where('idle', $data['data_post']['cb_idle']);
+        } else {
+        }
+        if ($data['data_post']['status_unit'] != 'Y') {
+            $this->db->where('status_unit', $data['data_post']['status_unit']);
+        } else {
+        }
+        $this->db->order_by('id_assets', 'DESC');
+        $data['data_assets'] = $this->db->get()->result_array();
+
+        //test
+        $html = $this->load->view('admin/report_assets', $data, true);
+        $dompdf->load_html($html);
+        $dompdf->set_paper('Legal', 'Landscape');
+        $dompdf->render();
+        $dompdf->output();
+        $dompdf->stream('Assets-report.pdf', array('Attachment' => false));
     }
 }
