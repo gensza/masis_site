@@ -63,7 +63,7 @@
                             </div>
                             <hr>
                             <h4 class="page-title mb-3">Data Permintaan Peminjaman</h4>
-                            <table id="scroll-horizontal-datatable" class="table table-striped">
+                            <table id="example" class="table table-striped">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>No</th>
@@ -82,109 +82,109 @@
                                 <tbody>
                                     <?php $no = 1  ?>
                                     <?php foreach ($assets as $a) : ?>
-                                        <tr>
-                                            <td><?= $no++  ?></td>
-                                            <td><?= $a['nama'] ?></td>
-                                            <td><?= $a['category'] ?></td>
-                                            <td><?= $a['merk'] ?></td>
-                                            <td><?= $a['serial_number'] ?></td>
+                                        <?php
+                                        if ($a['apprvd_y_dept'] == 1 and $a['apprvd_mis_dept'] == 1 and $a['lend_status'] == 0 or $a['lend_status'] == 3) {
+                                        } else {
+                                        ?>
+                                            <tr>
+                                                <td><?= $no++  ?></td>
+                                                <td><?= $a['nama'] ?></td>
+                                                <td><?= $a['category'] ?></td>
+                                                <td><?= $a['merk'] ?></td>
+                                                <td><?= $a['serial_number'] ?></td>
 
-                                            <td>
+                                                <td>
+                                                    <?php
+                                                    if ($a['lend_status'] == 3) {
+                                                    ?>
+                                                        <button type="button" class="btn btn-danger waves-effect waves-light">
+                                                            <span class="btn-label"><i class="fe-x-circle"></i></span>Canceled
+                                                        </button>
+                                                    <?php
+                                                    } elseif ($a['apprvd_y_dept'] == 0 or $a['apprvd_mis_dept'] == 0) {
+                                                    ?>
+                                                        <button type="button" class="btn btn-warning waves-effect waves-light">
+                                                            <span class="btn-label"><i class="mdi mdi-timer-sand"></i></span>Waiting
+                                                        </button>
+                                                    <?php
+                                                    } elseif ($a['lend_status'] == 1) {
+                                                    ?>
+                                                        <button type="button" class="btn btn-success waves-effect waves-light">
+                                                            <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Dipinjamkan
+                                                        </button>
+                                                    <?php
+                                                    } elseif ($a['apprvd_y_dept'] == 2 or $a['apprvd_mis_dept'] == 2) {
+                                                    ?>
+                                                        <button type="button" class="btn btn-danger waves-effect waves-light">
+                                                            <span class="btn-label"><i class="mdi mdi-close-circle-outline"></i></span>Rejected
+                                                        </button>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td><?= date('d-m-Y H:i:s', strtotime($a['date_lend'])); ?></td>
+                                                <td><?= date('d-m-Y', strtotime($a['due_date'])); ?></td>
+                                                <td><?= date('d-m-Y H:i:s', strtotime($a['date_return'])); ?></td>
+                                                <td><?= $a['notes'] ?></td>
                                                 <?php
-                                                if ($a['lend_status'] == 3) {
+                                                if ($a['apprvd_y_dept'] == 0 and $a['apprvd_mis_dept'] == 0 and $a['lend_status'] == 0) {
                                                 ?>
-                                                    <button type="button" class="btn btn-danger waves-effect waves-light">
-                                                        <span class="btn-label"><i class="fe-x-circle"></i></span>Canceled
-                                                    </button>
+                                                    <td>
+                                                        <button onclick="Swal.fire({
+                                                    title: 'Batalkan Permintaan?',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#d33',
+                                                    cancelButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Ya, Batalkan'
+                                                    }).then((result) => {
+                                                    if (result.value) {
+                                                        window.location.href='Users/cancelRequest/<?= $a['id_lend'] ?>';
+                                                        }
+                                                    })" class="btn btn-sm btn-danger ml-1">
+                                                            Batalkan
+                                                        </button>
+                                                    </td>
                                                 <?php
-                                                } elseif ($a['apprvd_y_dept'] == 0 or $a['apprvd_mis_dept'] == 0) {
+                                                } elseif ($a['lend_status'] == 2) {
                                                 ?>
-                                                    <button type="button" class="btn btn-warning waves-effect waves-light">
-                                                        <span class="btn-label"><i class="mdi mdi-timer-sand"></i></span>Waiting
-                                                    </button>
+                                                    <td>
+                                                        <h6><i><b>Waiting for return</b></i></h6>
+                                                    </td>
                                                 <?php
                                                 } elseif ($a['lend_status'] == 1) {
                                                 ?>
-                                                    <button type="button" class="btn btn-success waves-effect waves-light">
-                                                        <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Dipinjamkan
-                                                    </button>
+                                                    <td>
+                                                        <button onclick="Swal.fire({
+                                                    title: 'Kembalikan Asset?',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#d33',
+                                                    cancelButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Ya, Kembalikan'
+                                                    }).then((result) => {
+                                                    if (result.value) {
+                                                        window.location.href='Users/approveReturn/<?= $a['id_lend'] ?>';
+                                                        }
+                                                    })" class="btn btn-sm btn-info ml-1">
+                                                            Kembalikan
+                                                        </button>
+                                                    </td>
                                                 <?php
-                                                } elseif ($a['apprvd_y_dept'] == 2 or $a['apprvd_mis_dept'] == 2) {
+                                                } elseif ($a['lend_status'] == 3) {
                                                 ?>
-                                                    <button type="button" class="btn btn-danger waves-effect waves-light">
-                                                        <span class="btn-label"><i class="mdi mdi-close-circle-outline"></i></span>Rejected
-                                                    </button>
+                                                    <td>
+                                                        <h6 style="color: red;"><i><b>Canceled!</b></i></h6>
+                                                    </td>
                                                 <?php
-                                                } elseif ($a['apprvd_y_dept'] == 1 and $a['apprvd_mis_dept'] == 1 and $a['lend_status'] == 0) {
+                                                } else {
                                                 ?>
-                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">
-                                                        <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Returned
-                                                    </button>
+                                                    <td></td>
                                                 <?php
                                                 }
                                                 ?>
-                                            </td>
-                                            <td><?= date('d-m-Y H:i:s', strtotime($a['date_lend'])); ?></td>
-                                            <td><?= date('d-m-Y', strtotime($a['due_date'])); ?></td>
-                                            <td><?= date('d-m-Y H:i:s', strtotime($a['date_return'])); ?></td>
-                                            <td><?= $a['notes'] ?></td>
-                                            <?php
-                                            if ($a['apprvd_y_dept'] == 0 and $a['apprvd_mis_dept'] == 0 and $a['lend_status'] == 0) {
-                                            ?>
-                                                <td>
-                                                    <button onclick="Swal.fire({
-                                                title: 'Batalkan Permintaan?',
-                                                showCancelButton: true,
-                                                confirmButtonColor: '#d33',
-                                                cancelButtonColor: '#3085d6',
-                                                confirmButtonText: 'Ya, Batalkan'
-                                                }).then((result) => {
-                                                if (result.value) {
-                                                    window.location.href='Users/cancelRequest/<?= $a['id_lend'] ?>';
-                                                    }
-                                                })" class="btn btn-sm btn-danger ml-1">
-                                                        Batalkan
-                                                    </button>
-                                                </td>
-                                            <?php
-                                            } elseif ($a['lend_status'] == 2) {
-                                            ?>
-                                                <td>
-                                                    <h6><i><b>Waiting for return</b></i></h6>
-                                                </td>
-                                            <?php
-                                            } elseif ($a['lend_status'] == 1) {
-                                            ?>
-                                                <td>
-                                                    <button onclick="Swal.fire({
-                                                title: 'Kembalikan Asset?',
-                                                showCancelButton: true,
-                                                confirmButtonColor: '#d33',
-                                                cancelButtonColor: '#3085d6',
-                                                confirmButtonText: 'Ya, Kembalikan'
-                                                }).then((result) => {
-                                                if (result.value) {
-                                                    window.location.href='Users/approveReturn/<?= $a['id_lend'] ?>';
-                                                    }
-                                                })" class="btn btn-sm btn-info ml-1">
-                                                        Kembalikan
-                                                    </button>
-                                                </td>
-                                            <?php
-                                            } elseif ($a['lend_status'] == 3) {
-                                            ?>
-                                                <td>
-                                                    <h6 style="color: red;"><i><b>Canceled!</b></i></h6>
-
-                                                </td>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                <td></td>
-                                            <?php
-                                            }
-                                            ?>
-                                        </tr>
+                                            </tr>
+                                        <?php
+                                        }
+                                        ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>

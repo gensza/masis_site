@@ -67,7 +67,7 @@
                                     <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalAssets"><i class="mdi mdi-plus"></i> Add Assets</button>
                                 </div>
                             </div>
-                            <table id="scroll-horizontal-datatable" class="table table-striped">
+                            <table id="example" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -78,7 +78,7 @@
                                         <th>PT</th>
                                         <th>Lokasi</th>
                                         <th>Idle</th>
-                                        <th>Tgl Pembelian</th>
+                                        <th>User</th>
                                         <th>Kondisi</th>
                                         <th>Status</th>
                                         <th width="150px">Opsi</th>
@@ -99,7 +99,7 @@
                                                     echo "Ya";
                                                 } ?>
                                             </td>
-                                            <td><?= $a['tgl_pembelian'] ?></td>
+                                            <td><?= $a['user'] ?></td>
                                             <td>
                                                 <?php
                                                 if ($a['kondisi'] == 1) {

@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-6">
                 Copyright MIS &copy; <script>
-                document.write(new Date().getFullYear())
+                    document.write(new Date().getFullYear())
                 </script><a href=""> MSAL Group</a>
             </div>
         </div>
@@ -46,41 +46,47 @@
 <script src="<?= base_url() ?>/assets/js/app.min.js"></script>
 
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    // get Edit Product
-    $(document).on('click', '#detail_aset', function() {
+        // get Edit Product
+        $(document).on('click', '#detail_aset', function() {
 
-        var cpu = $(this).data('cpu');
-        var ram = $(this).data('ram');
-        var storage = $(this).data('storage');
-        var gpu = $(this).data('gpu');
-        var display = $(this).data('display');
-        var lain = $(this).data('lain');
-        // Set data to Form Edit
-        $('#cpu').text(cpu);
-        $('#ram').text(ram);
-        $('#storage').text(storage);
-        $('#gpu').text(gpu);
-        $('#display').text(display);
-        $('#lain').text(lain);
+            var cpu = $(this).data('cpu');
+            var ram = $(this).data('ram');
+            var storage = $(this).data('storage');
+            var gpu = $(this).data('gpu');
+            var display = $(this).data('display');
+            var lain = $(this).data('lain');
+            // Set data to Form Edit
+            $('#cpu').text(cpu);
+            $('#ram').text(ram);
+            $('#storage').text(storage);
+            $('#gpu').text(gpu);
+            $('#display').text(display);
+            $('#lain').text(lain);
+        });
+
     });
 
-
-});
+    $(document).ready(function() {
+        $('#example').DataTable({
+            "scrollY": 400,
+            "scrollX": true
+        });
+    });
 </script>
 
 </body>
 
 </html>
 <script>
-function deptPemChange() {
-    var tes = document.getElementById("deptPem").value;
-    document.getElementById("dept_pem").value = tes;
-}
+    function deptPemChange() {
+        var tes = document.getElementById("deptPem").value;
+        document.getElementById("dept_pem").value = tes;
+    }
 
-function deptMisChange() {
-    var tes = document.getElementById("deptMis").value;
-    document.getElementById("dept_mis").value = tes;
-}
+    function deptMisChange() {
+        var tes = document.getElementById("deptMis").value;
+        document.getElementById("dept_mis").value = tes;
+    }
 </script>
