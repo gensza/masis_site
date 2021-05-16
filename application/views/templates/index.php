@@ -87,7 +87,7 @@
                 </div> <!-- end col-->
             </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <div class="widget-rounded-circle card-box">
                         <div class="row">
                             <div class="col-6">
@@ -104,7 +104,24 @@
                         <p class="text-muted mt-1 mb-0 text-truncate">Aset Terpinjam</p>
                     </div> <!-- end widget-rounded-circle-->
                 </div> <!-- end col-->
-                <div class="col-6">
+                <div class="col-4">
+                    <div class="widget-rounded-circle card-box">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="avatar-lg rounded-circle bg-success border-light border shadow">
+                                    <i class="fe-check font-22 avatar-title text-white"></i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="text-right">
+                                    <h3 class="mt-1"><span data-plugin="counterup"><?= $idle_aset ?></span></h3>
+                                </div>
+                            </div>
+                        </div> <!-- end row-->
+                        <p class="text-muted mt-1 mb-0 text-truncate">Assets Idle</p>
+                    </div> <!-- end widget-rounded-circle-->
+                </div> <!-- end col-->
+                <div class="col-4">
                     <div class="widget-rounded-circle card-box">
                         <div class="row">
                             <div class="col-4">
@@ -188,18 +205,35 @@
                                 <tr>
                                     <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">Category
                                     </th>
-                                    <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col
-                                        data-tablesaw-priority="3">Qty</th>
+                                    <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Qty</th>
                                     <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Tersedia</th>
+                                    <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Idle Assets</th>
+                                    <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Asset Dipinjam</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($assets_data as $q) : ?>
-                                <tr>
-                                    <td><?= $q['category'] ?></td>
-                                    <td><?= $q['qty'] ?></td>
-                                    <td><?= $q['tersedia'] ?></td>
-                                </tr>
+                                    <tr>
+                                        <td><?= $q['category'] ?></td>
+                                        <td><?= $q['qty'] ?></td>
+                                        <td><?= $q['tersedia'] ?></td>
+                                        <td>
+                                            <?php
+                                            $result = "SELECT COUNT(idle) as idle FROM tb_assets WHERE qty_id = $q[id_qty] AND idle = 'on'";
+                                            $count = $this->db->query($result)->row_array();
+                                            // var_dump($count);
+                                            echo $count['idle'];
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $result = "SELECT COUNT(status_unit) as pinjam FROM tb_assets WHERE qty_id = $q[id_qty] AND status_unit = 0";
+                                            $count = $this->db->query($result)->row_array();
+                                            // var_dump($count);
+                                            echo $count['pinjam'];
+                                            ?>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -217,8 +251,6 @@
                                         <th>No</th>
                                         <th>Name</th>
                                         <th>Kategori</th>
-                                        <th>Dept Peminjam</th>
-                                        <th>Dept MIS</th>
                                         <th>Status</th>
                                         <th>Tgl Pinjam</th>
                                         <th>Jatuh Tempo</th>
@@ -237,92 +269,62 @@
                                 <tbody>
                                     <?php $no = 1  ?>
                                     <?php foreach ($assets as $a) : ?>
-                                    <tr>
-                                        <td><?= $no++  ?></td>
-                                        <td><?= $a['nama'] ?></td>
-                                        <td><?= $a['category'] ?></td>
-                                        <td>
-                                            <?php
-                                                if ($a['apprvd_y_dept'] == 0) {
+                                        <tr>
+                                            <td><?= $no++  ?></td>
+                                            <td><?= $a['nama'] ?></td>
+                                            <td><?= $a['category'] ?></td>
+                                            <td>
+                                                <?php
+                                                if ($a['lend_status'] == 3) {
                                                 ?>
-                                            <h5><span class="badge bg-soft-warning text-warning"><i
-                                                        class="mdi mdi-timer-sand"></i>waiting</span>
-                                            </h5>
-                                            <?php
-                                                } else if ($a['apprvd_y_dept'] == 1) {
+                                                    <button type="button" class="btn btn-danger waves-effect waves-light">
+                                                        <span class="btn-label"><i class="fe-x-circle"></i></span>Canceled
+                                                    </button>
+                                                <?php
+                                                } elseif ($a['apprvd_y_dept'] == 0 or $a['apprvd_mis_dept'] == 0) {
                                                 ?>
-                                            <h5><span class="badge badge-success">Approved</span></h5>
-                                            <?php
-                                                } else {
-                                                ?>
-                                            <h5><span class="badge badge-danger">Rejected</span></h5>
-                                            <?php
-                                                }
-                                                ?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                                if ($a['apprvd_mis_dept'] == 0) {
-                                                ?>
-                                            <h5><span class="badge bg-soft-warning text-warning"><i
-                                                        class="mdi mdi-timer-sand"></i>waiting</span>
-                                            </h5>
-                                            <?php
-                                                } else if ($a['apprvd_mis_dept'] == 1) {
-                                                ?>
-                                            <h5><span class="badge badge-success">Approved</span></h5>
-                                            <?php
-                                                } else {
-                                                ?>
-                                            <h5><span class="badge badge-danger">Rejected</span></h5>
-                                            <?php
-                                                }
-                                                ?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                                if ($a['apprvd_y_dept'] == 0 or $a['apprvd_mis_dept'] == 0) {
-                                                ?>
-                                            <button type="button" class="btn btn-warning waves-effect waves-light">
-                                                <span class="btn-label"><i class="mdi mdi-timer-sand"></i></span>Waiting
+                                                    <button type="button" class="btn btn-warning waves-effect waves-light">
+                                                        <span class="btn-label"><i class="mdi mdi-timer-sand"></i></span>Waiting
+                                                    </button>
                                                 <?php
                                                 } elseif ($a['lend_status'] == 1) {
-                                                    ?>
-                                                <button type="button" class="btn btn-success waves-effect waves-light">
-                                                    <span class="btn-label"><i
-                                                            class="mdi mdi-check-all"></i></span>Dipinjamkan
-                                                    <?php
-                                                    } elseif ($a['apprvd_y_dept'] == 2 or $a['apprvd_mis_dept'] == 2) {
-                                                        ?>
-                                                    <button type="button"
-                                                        class="btn btn-danger waves-effect waves-light">
-                                                        <span class="btn-label"><i
-                                                                class="mdi mdi-close-circle-outline"></i></span>Rejected
+                                                ?>
+                                                    <button type="button" class="btn btn-success waves-effect waves-light">
+                                                        <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Dipinjamkan
                                                     </button>
-                                                    <?php
-                                                    } elseif ($a['apprvd_y_dept'] == 1 and $a['apprvd_mis_dept'] == 1 and $a['lend_status'] == 0) {
-                                                        ?>
-                                                    <button type="button"
-                                                        class="btn btn-secondary waves-effect waves-light">
-                                                        <span class="btn-label"><i
-                                                                class="mdi mdi-check-all"></i></span>Returned
-                                                        <?php
-                                                        }
-                                                            ?>
-                                        </td>
-                                        <td><?= date('d-m-Y H:i:s', strtotime($a['date_lend'])); ?></td>
-                                        <td><?= date('d-m-Y', strtotime($a['due_date'])); ?></td>
-                                        <td><?= date('d-m-Y H:i:s', strtotime($a['date_return'])); ?></td>
-                                        <td><?= $a['merk'] ?></td>
-                                        <td><?= $a['serial_number'] ?></td>
-                                        <td><?= $a['cpu'] ?></td>
-                                        <td><?= $a['ram'] ?></td>
-                                        <td><?= $a['storage'] ?></td>
-                                        <td><?= $a['gpu'] ?></td>
-                                        <td><?= $a['display'] ?></td>
-                                        <td><?= $a['lain'] ?></td>
-                                        <td><?= $a['notes'] ?></td>
-                                    </tr>
+                                                <?php
+                                                } elseif ($a['apprvd_y_dept'] == 2 or $a['apprvd_mis_dept'] == 2) {
+                                                ?>
+                                                    <button type="button" class="btn btn-danger waves-effect waves-light">
+                                                        <span class="btn-label"><i class="mdi mdi-close-circle-outline"></i></span>Rejected
+                                                    </button>
+                                                <?php
+                                                } elseif ($a['lend_status'] == 2) {
+                                                ?>
+                                                    <h6><i><b>Waiting for return</b></i></h6>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <button type="button" class="btn btn-secondary waves-effect waves-light">
+                                                        <span class="btn-label"><i class="mdi mdi-close-circle-outline"></i></span>Returned
+                                                    </button>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
+                                            <td><?= date('d-m-Y H:i:s', strtotime($a['date_lend'])); ?></td>
+                                            <td><?= date('d-m-Y', strtotime($a['due_date'])); ?></td>
+                                            <td><?= date('d-m-Y H:i:s', strtotime($a['date_return'])); ?></td>
+                                            <td><?= $a['merk'] ?></td>
+                                            <td><?= $a['serial_number'] ?></td>
+                                            <td><?= $a['cpu'] ?></td>
+                                            <td><?= $a['ram'] ?></td>
+                                            <td><?= $a['storage'] ?></td>
+                                            <td><?= $a['gpu'] ?></td>
+                                            <td><?= $a['display'] ?></td>
+                                            <td><?= $a['lain'] ?></td>
+                                            <td><?= $a['notes'] ?></td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>

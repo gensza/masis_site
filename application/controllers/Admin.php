@@ -45,6 +45,10 @@ class Admin extends CI_Controller
         $this->db->from('tb_assets');
         $data['dipinjam'] = $this->db->count_all_results();
 
+        $this->db->where('idle', 'on');
+        $this->db->from('tb_assets');
+        $data['idle_aset'] = $this->db->count_all_results();
+
         $this->db->where(['apprvd_y_dept' => 1, 'apprvd_mis_dept' => 1, 'lend_status' => 0]);
         $this->db->from('tb_lend_assets');
         $data['return'] = $this->db->count_all_results();

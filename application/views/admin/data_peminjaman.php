@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="page-title mb-3">Pinjam Aset</h4>
-                            <form method="POST" action="<?= base_url('Users/trx') ?>">
+                            <form method="POST" action="<?= base_url('DataPeminjaman/trx') ?>">
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="form-group col-lg-2 col-md-6">
@@ -66,7 +66,12 @@
                                 <?php endforeach; ?>
                             </div>
                             <hr class="mt-1">
-                            <h4 class="page-title mb-3">Data Permintaan Peminjaman</h4>
+
+                            <div class="row justify-content-between mb-2 ml-0 mr-0">
+                                <label class="page-title"><b>Data Peminjaman</b></label>
+                                <a href="<?= base_url('DataPeminjaman/reportDataPeminjaman') ?>" target="_blank" class="btn btn-xs btn-danger"><i class="mdi mdi-file"></i> Report</a>
+                            </div>
+
                             <table id="example" class="table table-striped">
                                 <thead class="thead-light">
                                     <tr>
@@ -140,7 +145,7 @@
                                                     confirmButtonText: 'Ya, Batalkan'
                                                     }).then((result) => {
                                                     if (result.value) {
-                                                        window.location.href='Users/cancelRequest/<?= $a['id_lend'] ?>';
+                                                        window.location.href='DataPeminjaman/cancelRequest/<?= $a['id_lend'] ?>';
                                                         }
                                                     })" class="btn btn-sm btn-danger ml-1">
                                                             Batalkan
@@ -164,7 +169,7 @@
                                                     confirmButtonText: 'Ya, Kembalikan'
                                                     }).then((result) => {
                                                     if (result.value) {
-                                                        window.location.href='Users/approveReturn/<?= $a['id_lend'] ?>';
+                                                        window.location.href='DataPeminjaman/approveReturn/<?= $a['id_lend'] ?>';
                                                         }
                                                     })" class="btn btn-sm btn-info ml-1">
                                                             Kembalikan

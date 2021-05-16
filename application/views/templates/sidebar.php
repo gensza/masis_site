@@ -44,10 +44,13 @@
                         <div class="collapse" id="sidebarCrm">
                             <ul class="nav-second-level">
                                 <li>
-                                    <a href="<?= base_url('permintaanPeminjaman') ?>">Peminjaman</a>
+                                    <a href="<?= base_url('DataPeminjaman') ?>">Data Peminjaman</a>
                                 </li>
                                 <li>
-                                    <a href="<?= base_url('permintaanPengembalian') ?>">Pengembalian</a>
+                                    <a href="<?= base_url('PermintaanPeminjaman') ?>">Permintaan Peminjaman</a>
+                                </li>
+                                <li>
+                                    <a href="<?= base_url('PermintaanPengembalian') ?>">Permintaan Pengembalian</a>
                                 </li>
                             </ul>
                         </div>
@@ -59,19 +62,21 @@
                         </a>
                     </li>
                 <?php } ?>
-                <li class="menu-title">Users</li>
-                <li>
-                    <a href="<?= base_url('Auth') ?>">
-                        <i class="mdi mdi-login"></i>
-                        <span> Admin </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= base_url('Users') ?>">
-                        <i class="mdi mdi-archive-arrow-down"></i>
-                        <span> Pinjam Aset </span>
-                    </a>
-                </li>
+                <?php if (!$this->session->userdata('email')) { ?>
+                    <li class="menu-title">Users</li>
+                    <li>
+                        <a href="<?= base_url('Auth') ?>">
+                            <i class="mdi mdi-login"></i>
+                            <span> Admin </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= base_url('Users') ?>">
+                            <i class="mdi mdi-archive-arrow-down"></i>
+                            <span> Pinjam Aset </span>
+                        </a>
+                    </li>
+                <?php } ?>
             </ul>
         </div>
         <!-- End Sidebar -->
