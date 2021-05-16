@@ -8,8 +8,8 @@ class PermintaanPeminjaman extends CI_Controller
         // menjalankan method ketika class Auth dijalankan
         parent::__construct();
         $this->load->library('form_validation');
-        if (!$this->session->userdata('email')) {
-            redirect('Users');
+        if (!$this->session->userdata('userlogin')) {
+            redirect('http://mips.msalgroup.com/msal-login/');
         }
     }
 

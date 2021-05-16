@@ -8,6 +8,10 @@ class Auth extends CI_Controller
 		// menjalankan method ketika class Auth dijalankan
 		parent::__construct();
 		$this->load->library('form_validation');
+
+		if (!$this->session->userdata('userlogin')) {
+            redirect('http://mips.msalgroup.com/msal-login/');
+        }
 	}
 
 	public function index()
@@ -107,10 +111,10 @@ class Auth extends CI_Controller
 
 	public function logout()
 	{
-		$this->session->unset_userdata('email');
-		$this->session->unset_userdata('role_id');
+		$this->session->unset_userdata('userlogin');
+		$this->session->sess_destroy();
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logged out!</div>');
-		redirect('Auth');
+		redirect('http://mips.msalgroup.com/msal-login/');
 	}
 
 	public function blocked()

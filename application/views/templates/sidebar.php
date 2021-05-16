@@ -4,7 +4,7 @@
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <ul id="side-menu">
-                <?php if ($this->session->userdata('email')) { ?>
+                <?php if ($this->session->userdata('userlogin')) { ?>
                     <li class="menu-title">Admin</li>
                     <li>
                         <a href="<?= base_url('Admin') ?>">
@@ -62,10 +62,10 @@
                         </a>
                     </li>
                 <?php } ?>
-                <?php if (!$this->session->userdata('email')) { ?>
+                <?php if (!$this->session->userdata('userlogin')) { ?>
                     <li class="menu-title">Users</li>
                     <li>
-                        <a href="<?= base_url('Auth') ?>">
+                        <a href="http://mips.msalgroup.com/msal-login/">
                             <i class="mdi mdi-login"></i>
                             <span> Admin </span>
                         </a>
