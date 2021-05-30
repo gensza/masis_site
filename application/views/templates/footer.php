@@ -19,8 +19,9 @@
 <!-- END wrapper -->
 <!-- Right bar overlay-->
 <div class="rightbar-overlay"></div>
-<!-- Vendor js -->
-<script src="<?= base_url() ?>/assets/js/vendor.min.js"></script>
+
+<!-- Vendor js di taro di bawah menu sidebar-->
+<!-- <script src="<?= base_url() ?>/assets/js/vendor.min.js"></script> -->
 <!-- third party js -->
 <script src="<?= base_url() ?>/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?= base_url() ?>/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -45,41 +46,17 @@
 <!-- App js-->
 <script src="<?= base_url() ?>/assets/js/app.min.js"></script>
 
+</body>
+
+</html>
 <script>
-    $(document).ready(function() {
-
-        // get Edit Product
-        $(document).on('click', '#detail_aset', function() {
-
-            var cpu = $(this).data('cpu');
-            var ram = $(this).data('ram');
-            var storage = $(this).data('storage');
-            var gpu = $(this).data('gpu');
-            var display = $(this).data('display');
-            var lain = $(this).data('lain');
-            // Set data to Form Edit
-            $('#cpu').text(cpu);
-            $('#ram').text(ram);
-            $('#storage').text(storage);
-            $('#gpu').text(gpu);
-            $('#display').text(display);
-            $('#lain').text(lain);
-        });
-
-    });
-
     $(document).ready(function() {
         $('#example').DataTable({
             "scrollY": 400,
             "scrollX": true
         });
     });
-</script>
 
-</body>
-
-</html>
-<script>
     function deptPemChange() {
         var tes = document.getElementById("deptPem").value;
         document.getElementById("dept_pem").value = tes;

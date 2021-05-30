@@ -9,9 +9,9 @@ class Auth extends CI_Controller
 		parent::__construct();
 		$this->load->library('form_validation');
 
-		if (!$this->session->userdata('userlogin')) {
-            redirect('http://mips.msalgroup.com/msal-login/');
-        }
+		// if (!$this->session->userdata('userlogin')) {
+		// 	redirect('http://mips.msalgroup.com/msal-login/');
+		// }
 	}
 
 	public function index()
@@ -38,7 +38,7 @@ class Auth extends CI_Controller
 	{
 		// jika sudah login tidak bisa ke view login
 		if ($this->session->userdata('email')) {
-			redirect('User');
+			redirect('Users');
 		}
 		$email = $this->input->post('email');
 		$password = $this->input->post('password');
@@ -114,7 +114,8 @@ class Auth extends CI_Controller
 		$this->session->unset_userdata('userlogin');
 		$this->session->sess_destroy();
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logged out!</div>');
-		redirect('http://mips.msalgroup.com/msal-login/');
+		// redirect('http://mips.msalgroup.com/msal-login/');
+		redirect('Auth');
 	}
 
 	public function blocked()

@@ -13,7 +13,6 @@ class DataPeminjaman extends CI_Controller
             redirect('http://mips.msalgroup.com/msal-login/');
         }
         require_once APPPATH . 'third_party/dompdf/dompdf_config.inc.php';
-
     }
 
     public function index()

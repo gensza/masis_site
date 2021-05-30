@@ -19,7 +19,7 @@
                     <?= $this->session->flashdata('message'); ?>
                     <div class="card">
                         <div class="card-body">
-                            <!-- <div class="row">
+                            <div class="row">
                                 <div class="col-lg-4 col-12">
                                     <form action="<?= base_url('DataAssets') ?>" method="POST">
                                         <div class="row">
@@ -56,15 +56,14 @@
                                         <p class="mt-1">Filter : <?= $filtered2 ?></p>
                                     </form>
                                 </div>
-                            </div> -->
+                            </div>
 
-                            <div class="row mb-3">
+                            <div class="row mt-3 mb-3">
                                 <div class="col-lg-8 col-4">
-                                    <h4 class="header-title">Data Table</h4>
+                                    <h4 class="header-title ml-2">Data Table</h4>
                                 </div>
                                 <div class="col-lg-4 col-8 text-right">
                                     <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modalReport"><i class="mdi mdi-file"></i> Report</button>
-                                    <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modalFilter"><i class="mdi mdi-filter"></i> Filter</button>
                                     <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalAssets"><i class="mdi mdi-plus"></i> Add Assets</button>
                                 </div>
                             </div>
@@ -424,69 +423,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalFilter">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Filter Berdasarkan</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body table-responsive">
-                    <form action="<?= base_url('DataAssets') ?>" method="POST">
-                        <div class="row">
-                            <input type="hidden" name="filter" value="filter">
-                            <div class="form-group col-4">
-                                <select name="pilih_pt" id="pilih_pt" class="form-control" required>
-                                    <option value="Y">Semua PT</option>
-                                    <?php foreach ($pt_add as $p) : ?>
-                                        <option value="<?= $p['id_pt'] ?>"><?= $p['alias'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="form-group col-5">
-                                <select name="pilih_category" id="pilih_category" class="form-control" required>
-                                    <option value="Y">Semua Category</option>
-                                    <?php foreach ($category as $c) : ?>
-                                        <option value="<?= $c['id_qty'] ?>"><?= $c['category'] ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="custom-control custom-checkbox mt-1 col-3">
-                                <input type="checkbox" name="cb_idle2" class="custom-control-input" id="cb_idle2">
-                                <label class="custom-control-label" for="cb_idle2">Idle</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-5">
-                                <select name="pilih_kondisi" id="pilih_kondisi" class="form-control" required>
-                                    <option value="Y">Semua Kondisi</option>
-                                    <option value="1">Baik</option>
-                                    <option value="0">Rusak</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-3">
-                                <input type="text" class="form-control" id="cari_lokasi" name="cari_lokasi" placeholder="Lokasi">
-                            </div>
-                            <div class="form-group col-4">
-                                <select name="status_unit" id="status_unit" class="form-control" required>
-                                    <option value="Y">Semua Status</option>
-                                    <option value="1">Tersedia</option>
-                                    <option value="0">Dipinjam</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-sm btn-danger">Filter</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         $(document).ready(function() {
 
@@ -508,5 +444,12 @@
                 $('#lain').text(lain);
             });
 
+        });
+
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "scrollY": 400,
+                "scrollX": true
+            });
         });
     </script>

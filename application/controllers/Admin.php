@@ -7,8 +7,14 @@ class Admin extends CI_Controller
     {
         // menjalankan method ketika class Auth dijalankan
         parent::__construct();
-        if (!$this->session->userdata('userlogin')) {
-            redirect('http://mips.msalgroup.com/msal-login/');
+
+        // FOR SSO
+        // if (!$this->session->userdata('userlogin')) {
+        //     redirect('http://mips.msalgroup.com/msal-login/');
+        // }
+
+        if (!$this->session->userdata('email')) {
+            redirect('Auth');
         }
     }
 
