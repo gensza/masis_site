@@ -9,9 +9,16 @@ class DataPeminjaman extends CI_Controller
         // menjalankan method ketika class Auth dijalankan
         parent::__construct();
         $this->load->library('form_validation');
-        if (!$this->session->userdata('userlogin')) {
-            redirect('http://mips.msalgroup.com/msal-login/');
+
+        //for SSO
+        // if (!$this->session->userdata('userlogin')) {
+        //     redirect('http://mips.msalgroup.com/msal-login/');
+        // }
+
+        if (!$this->session->userdata('email')) {
+            redirect('Auth');
         }
+
         require_once APPPATH . 'third_party/dompdf/dompdf_config.inc.php';
     }
 

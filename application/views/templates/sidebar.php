@@ -55,6 +55,15 @@
                             </ul>
                         </div>
                     </li>
+
+                    <li>
+                        <a href="<?= base_url('#') ?>">
+                            <i class="mdi mdi-alert"></i>
+                            <span class="badge badge-danger float-right">5</span>
+                            <span>Maintenance</span>
+                        </a>
+                    </li>
+
                     <li class="mb-2">
                         <a href="<?= base_url('Auth/logout') ?>">
                             <i class="mdi mdi-logout"></i>

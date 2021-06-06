@@ -20,6 +20,8 @@ class DataAssets extends CI_Controller
             redirect('Auth');
         }
 
+        date_default_timezone_set('Asia/Jakarta');
+
         require_once APPPATH . 'third_party/dompdf/dompdf_config.inc.php';
     }
 
@@ -33,25 +35,47 @@ class DataAssets extends CI_Controller
         $data['pt_add'] = $this->db->get('tb_pt')->result_array();
         $data['category'] = $this->db->get('tb_qty_assets')->result_array();
 
-        if ($this->input->post('filter') == "filter") {
-            $data_filter = [
-                'pilih_pt' => $this->input->post('pilih_pt'),
-                'pilih_category' => $this->input->post('pilih_category'),
-                'pilih_kondisi' => $this->input->post('pilih_kondisi'),
-                'cari_lokasi' => $this->input->post('cari_lokasi'),
-                'cb_idle' => $this->input->post('cb_idle2'),
-                'status_unit' => $this->input->post('status_unit')
-            ];
-            $data['assets'] = $this->M_data_assets->data_assets_filter($data_filter);
-        } else {
-            $data['assets'] = $this->M_data_assets->data_assets();
-        }
+        // if ($this->input->post('filter') == "filter") {
+        //     $data_filter = [
+        //         'pilih_pt' => $this->input->post('pilih_pt'),
+        //         'pilih_category' => $this->input->post('pilih_category'),
+        //         'pilih_kondisi' => $this->input->post('pilih_kondisi'),
+        //         'cari_lokasi' => $this->input->post('cari_lokasi'),
+        //         'cb_idle' => $this->input->post('cb_idle2'),
+        //         'status_unit' => $this->input->post('status_unit')
+        //     ];
+        //     $data['assets'] = $this->M_data_assets->data_assets_filter($data_filter);
+        // } else {
+        //     $data['assets'] = $this->M_data_assets->data_assets();
+        // }
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('templates/sidebar', $data);
-        $this->load->view('admin/data_assets', $data);
+        $this->load->view('admin/data_assets/data_assets', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function input_assets()
+    {
+        $data['title'] = 'Input Assets';
+
+        $data['pt'] = $this->db->get('tb_pt')->result_array();
+        $data['pt_add'] = $this->db->get('tb_pt')->result_array();
+        $data['category'] = $this->db->get('tb_qty_assets')->result_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('admin/data_assets/input_assets', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function select_get_divisi()
+    {
+        $id_pt = $this->input->post('id_pt');
+        $data = $this->M_data_assets->get_divisi($id_pt);
+        echo json_encode($data);
     }
 
     // public function filterPt()
@@ -87,6 +111,12 @@ class DataAssets extends CI_Controller
 
     public function addAssets()
     {
+        $frek_maintenan = $this->input->post('frek_maintenan');
+        $tgl_mulai_maintenan = $this->input->post('tgl_mulai_maintenan');
+        $tgl_mulai_maintenan_sort = strtotime($this->input->post('tgl_mulai_maintenan'));
+
+        $tgl_jadwal_maintenan = date('Y-m-d', $tgl_mulai_maintenan_sort + (60 * 60 * 24 * $frek_maintenan));
+
         $this->form_validation->set_rules('kondisi', 'Kondisi', 'required|trim');
         $this->form_validation->set_rules('category', 'category', 'required|trim');
         if ($this->form_validation->run() == false) {
@@ -120,7 +150,11 @@ class DataAssets extends CI_Controller
                 'ket_fisik' => $this->input->post('ket_fisik'),
                 'no_po' => $this->input->post('no_po'),
                 'harga' => $this->input->post('harga'),
-                'status_unit' => 1
+                'status_unit' => 1,
+                'frek_maintenan' => $frek_maintenan,
+                'tgl_mulai_maintenan' => $tgl_mulai_maintenan,
+                'tgl_jadwal_maintenan' => $tgl_jadwal_maintenan,
+                'date_created' => date('Y-m-d H:i:s')
             ];
             $this->db->insert('tb_assets', $data);
 
@@ -156,7 +190,7 @@ class DataAssets extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('templates/sidebar', $data);
-        $this->load->view('admin/edit_assets', $data);
+        $this->load->view('admin/data_assets/edit_assets', $data);
         $this->load->view('templates/footer');
     }
 
@@ -246,7 +280,7 @@ class DataAssets extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('templates/sidebar', $data);
-        $this->load->view('admin/qty_assets', $data);
+        $this->load->view('admin/category_assets/qty_assets', $data);
         $this->load->view('templates/footer');
     }
 
@@ -276,7 +310,7 @@ class DataAssets extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('templates/sidebar', $data);
-        $this->load->view('admin/edit_category', $data);
+        $this->load->view('admin/category_assets/edit_category', $data);
         $this->load->view('templates/footer');
     }
 
@@ -365,19 +399,57 @@ class DataAssets extends CI_Controller
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $field) {
+
+            //idle
+            if ($field->idle  == 'on') {
+                $idle = 'Ya';
+            } else {
+                $idle = '';
+            }
+
+            //kondisi
+            if ($field->kondisi == 1) {
+                $kondisi = 'BAIK';
+            } else {
+                $kondisi = 'RUSAK';
+            }
+
+            //status
+            if ($field->kondisi == 1 and $field->status_unit == 1) {
+                $status = '<p style="color: green;"><b>Tersedia!</b></p>';
+            } else if ($field->kondisi == 0) {
+                $status = '<p style="color: red;"><b>Rusak</b></p>';
+            } else {
+                $status = '<p style="color: blue;"><b>Dipinjam</b></p>';
+            }
+
+            if ($field->status_unit == 1 and $field->kondisi == 1) {
+                $aksi = '
+                <a id="detail_aset" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-detail-aset" data-cpu="' . $field->cpu . '" data-ram="' . $field->ram . '" data-storage="' . $field->storage . '" data-gpu="' . $field->gpu . '" data-display="' . $field->display . '" data-lain="' . $field->lain . '"><i class="mdi mdi-eye" style="color: white;"></i></a>
+                <button class="btn btn-sm btn-warning mdi mdi-lead-pencil" onClick="edit_assets(' . $field->id_assets . ')"></button>
+                <button class="btn btn-sm btn-danger mdi mdi-trash-can-outline" onClick="delete_assets(' . $field->id_assets . ',' . $field->qty_id . ')"></button>
+                ';
+            } else {
+                $aksi = '
+                <a id="detail_aset" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-detail-aset" data-cpu="' . $field->cpu . '" data-ram="' . $field->ram . '" data-storage="' . $field->storage . '" data-gpu="' . $field->gpu . '" data-display="' . $field->display . '" data-lain="' . $field->lain . '"><i class="mdi mdi-eye" style="color: white;"></i></a>
+                <button class="btn btn-sm btn-warning mdi mdi-lead-pencil" onClick="edit_assets(' . $field->id_assets . ')"></button>
+                ';
+            }
+
             $no++;
             $row = array();
             $row[] = $no;
             $row[] = $field->kode_assets;
             $row[] = $field->merk;
-            $row[] = $field->qty_id;
+            $row[] = $field->category;
             $row[] = $field->serial_number;
-            $row[] = $field->id_pt;
+            $row[] = $field->alias;
             $row[] = $field->lokasi;
-            $row[] = $field->idle;
+            $row[] = $idle;
             $row[] = $field->user;
-            $row[] = $field->kondisi;
-            $row[] = $field->status_unit;
+            $row[] = $kondisi;
+            $row[] = $status;
+            $row[] = $aksi;
 
             $data[] = $row;
         }

@@ -6,8 +6,8 @@ class M_data_assets extends CI_Model
 {
 
     var $table = 'tb_assets'; //nama tabel dari database
-    var $column_order = array(null, 'kode_assets', 'merk', 'qty_id', 'serial_number', 'id_pt', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit'); //field yang ada di table user
-    var $column_search = array('kode_assets', 'merk', 'qty_id', 'serial_number', 'id_pt', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit'); //field yang diizin untuk pencarian 
+    var $column_order = array(null, 'id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain'); //field yang ada di table user
+    var $column_search = array('id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain'); //field yang diizin untuk pencarian 
     var $order = array('id_assets' => 'asc'); // default order 
 
     public function __construct()
@@ -19,6 +19,9 @@ class M_data_assets extends CI_Model
     private function _get_datatables_query()
     {
 
+        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+        $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+        $this->db->order_by('id_assets', 'DESC');
         $this->db->from($this->table);
 
         $i = 0;
@@ -109,6 +112,17 @@ class M_data_assets extends CI_Model
             $this->db->where('status_unit', $data_filter['status_unit']);
         }
         $this->db->order_by('id_assets', 'DESC');
+        return $this->db->get()->result_array();
+    }
+
+    public function get_divisi($id_pt)
+    {
+        // $query = "SELECT id_divisi, nama_divisi FROM tb_divisi WHERE id_pt = '$id_pt'";
+        // return $this->db->query($query)->result_array();
+
+        $this->db->select('id_divisi, nama_divisi');
+        $this->db->where('id_pt', $id_pt);
+        $this->db->from('tb_divisi');
         return $this->db->get()->result_array();
     }
 }
