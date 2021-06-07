@@ -107,11 +107,11 @@
         <th class="spc">------------</th>
         <th class="aleft">Lokasi</th><th> : </th>
         <th class="aleft"><?php
-            if($data_post['cari_lokasi'] == NULL)
+            if($data_post['divisi'] == NULL)
             {
                 echo "(Semua Lokasi)";
             }else{
-                echo $data_post['cari_lokasi'];
+                echo $data_post['divisi'];
             }
         ?></th>
         <th class="spc">------------</th>

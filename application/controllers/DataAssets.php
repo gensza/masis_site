@@ -28,11 +28,15 @@ class DataAssets extends CI_Controller
     public function index()
     {
         $data['title'] = 'Data Assets';
-        $data['filtered'] = 'no filter detected ..';
-        $data['filtered2'] = 'no filter detected ..';
+        // $data['filtered'] = 'no filter detected ..';
+        // $data['filtered2'] = 'no filter detected ..';
 
-        $data['pt'] = $this->db->get('tb_pt')->result_array();
-        $data['pt_add'] = $this->db->get('tb_pt')->result_array();
+        // $data['pt'] = $this->db->get('tb_pt')->result_array();
+        // $data['pt_add'] = $this->db->get('tb_pt')->result_array();
+        $sess_user = $this->session->userdata('id_pt');
+        $data['pt_report'] = $this->db->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
+        $data['pt_filter'] = $this->db->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
+
         $data['category'] = $this->db->get('tb_qty_assets')->result_array();
 
         // if ($this->input->post('filter') == "filter") {
@@ -60,8 +64,8 @@ class DataAssets extends CI_Controller
     {
         $data['title'] = 'Input Assets';
 
-        $data['pt'] = $this->db->get('tb_pt')->result_array();
-        $data['pt_add'] = $this->db->get('tb_pt')->result_array();
+        $sess_user = $this->session->userdata('id_pt');
+        $data['pt'] = $this->db->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
         $data['category'] = $this->db->get('tb_qty_assets')->result_array();
 
         $this->load->view('templates/header', $data);
@@ -75,6 +79,13 @@ class DataAssets extends CI_Controller
     {
         $id_pt = $this->input->post('id_pt');
         $data = $this->M_data_assets->get_divisi($id_pt);
+        echo json_encode($data);
+    }
+
+    public function select_get_pt()
+    {
+        $data = $this->db->get('tb_pt')->result_array();
+
         echo json_encode($data);
     }
 
@@ -122,38 +133,49 @@ class DataAssets extends CI_Controller
         if ($this->form_validation->run() == false) {
             $this->index();
         } else {
-            $kd = '1234567890';
-            $string = 'MSAL' . date("Ymd");
-            for ($i = 0; $i < 3; $i++) {
-                $pos = rand(0, strlen($kd) - 1);
-                $string .= $pos;
-            }
+            // $kd = '1234567890';
+            // $string = 'MSAL' . date("Ymd");
+            // for ($i = 0; $i < 3; $i++) {
+            //     $pos = rand(0, strlen($kd) - 1);
+            //     $string .= $pos;
+            // }
             $data = [
-                'kode_assets' => $string,
-                'merk' => htmlspecialchars($this->input->post('merk', true)),
-                'serial_number' => htmlspecialchars($this->input->post('serial_number', true)),
-                'id_pt' => $this->input->post('id_pt', true),
-                'lokasi' => htmlspecialchars($this->input->post('lokasi', true)),
-                'cpu' => htmlspecialchars($this->input->post('cpu', true)),
-                'ram' => htmlspecialchars($this->input->post('ram', true)),
-                'storage' => htmlspecialchars($this->input->post('storage', true)),
-                'gpu' => htmlspecialchars($this->input->post('gpu', true)),
-                'display' => htmlspecialchars($this->input->post('display', true)),
-                'lain' => htmlspecialchars($this->input->post('lain', true)),
                 'qty_id' => $this->input->post('category'),
+                'kode_assets' => $this->input->post('kode_asset'),
+                'type' => $this->input->post('type'),
+                'serial_number' => $this->input->post('serial_number'),
+                'satuan' => $this->input->post('satuan'),
+                'id_pt' => $this->input->post('id_pt'),
+                'id_divisi' => $this->input->post('divisi'),
+                'user' => $this->input->post('user'),
+                'lokasi' => $this->input->post('lokasi'),
+                'no_po' => $this->input->post('no_po'),
+                'merk' => $this->input->post('merk'),
+                'cpu' => $this->input->post('cpu'),
+                'os' => $this->input->post('os'),
+                'storage' => $this->input->post('storage'),
+                'ram' => $this->input->post('ram'),
+                'gpu' => $this->input->post('gpu'),
+                'display' => $this->input->post('display'),
+                'lain' => $this->input->post('lain'),
+                'merk_monitor' => $this->input->post('merk_monitor'),
+                'sn_monitor' => $this->input->post('sn_monitor'),
+                'merk_keyboard' => $this->input->post('merk_keyboard'),
+                'sn_keyboard' => $this->input->post('sn_keyboard'),
+                'merk_mouse' => $this->input->post('merk_mouse'),
+                'sn_mouse' => $this->input->post('sn_mouse'),
                 'tgl_pembelian' => $this->input->post('tgl_pembelian'),
                 'kondisi' => $this->input->post('kondisi'),
-                'user' => $this->input->post('user'),
-                'status_kondisi' => $this->input->post('status_kondisi'),
-                'idle' => $this->input->post('idle'),
-                'fisik' => $this->input->post('fisik'),
-                'ket_fisik' => $this->input->post('ket_fisik'),
-                'no_po' => $this->input->post('no_po'),
+                'no_ba' => $this->input->post('no_ba'),
                 'harga' => $this->input->post('harga'),
-                'status_unit' => 1,
+                'status_kondisi' => $this->input->post('status_kondisi'),
+                'fisik' => $this->input->post('fisik'),
+                'idle' => $this->input->post('idle'),
                 'frek_maintenan' => $frek_maintenan,
+                'status_unit' => 1,
                 'tgl_mulai_maintenan' => $tgl_mulai_maintenan,
                 'tgl_jadwal_maintenan' => $tgl_jadwal_maintenan,
+                'ket_fisik' => $this->input->post('ket_fisik'),
                 'date_created' => date('Y-m-d H:i:s')
             ];
             $this->db->insert('tb_assets', $data);
@@ -182,7 +204,6 @@ class DataAssets extends CI_Controller
         $this->db->select('*');
         $this->db->from('tb_assets');
         $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
-        $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
         $this->db->where('id_assets', $id);
         $this->db->order_by('id_assets', 'DESC');
         $data['assets']  = $this->db->get()->result_array();
@@ -196,28 +217,49 @@ class DataAssets extends CI_Controller
 
     public function updateAssets()
     {
+        $frek_maintenan = $this->input->post('frek_maintenan');
+        $tgl_mulai_maintenan = $this->input->post('tgl_mulai_maintenan');
+        $tgl_mulai_maintenan_sort = strtotime($this->input->post('tgl_mulai_maintenan'));
+
+        $tgl_jadwal_maintenan = date('Y-m-d', $tgl_mulai_maintenan_sort + (60 * 60 * 24 * $frek_maintenan));
+
         $data = [
             'id_assets' => $this->input->post('id_assets'),
-            'merk' => htmlspecialchars($this->input->post('merk', true)),
-            'serial_number' => htmlspecialchars($this->input->post('serial_number', true)),
-            'id_pt' => $this->input->post('id_pt', true),
-            'lokasi' => htmlspecialchars($this->input->post('lokasi', true)),
-            'cpu' => htmlspecialchars($this->input->post('cpu', true)),
-            'ram' => htmlspecialchars($this->input->post('ram', true)),
-            'storage' => htmlspecialchars($this->input->post('storage', true)),
-            'gpu' => htmlspecialchars($this->input->post('gpu', true)),
-            'display' => htmlspecialchars($this->input->post('display', true)),
-            'lain' => htmlspecialchars($this->input->post('lain', true)),
             'qty_id' => $this->input->post('category'),
+            'kode_assets' => $this->input->post('kode_asset'),
+            'type' => $this->input->post('type'),
+            'serial_number' => $this->input->post('serial_number'),
+            'satuan' => $this->input->post('satuan'),
+            'id_pt' => $this->input->post('id_pt'),
+            'id_divisi' => $this->input->post('divisi'),
+            'user' => $this->input->post('user'),
+            'lokasi' => $this->input->post('lokasi'),
+            'no_po' => $this->input->post('no_po'),
+            'merk' => $this->input->post('merk'),
+            'cpu' => $this->input->post('cpu'),
+            'os' => $this->input->post('os'),
+            'storage' => $this->input->post('storage'),
+            'ram' => $this->input->post('ram'),
+            'gpu' => $this->input->post('gpu'),
+            'display' => $this->input->post('display'),
+            'lain' => $this->input->post('lain'),
+            'merk_monitor' => $this->input->post('merk_monitor'),
+            'sn_monitor' => $this->input->post('sn_monitor'),
+            'merk_keyboard' => $this->input->post('merk_keyboard'),
+            'sn_keyboard' => $this->input->post('sn_keyboard'),
+            'merk_mouse' => $this->input->post('merk_mouse'),
+            'sn_mouse' => $this->input->post('sn_mouse'),
             'tgl_pembelian' => $this->input->post('tgl_pembelian'),
             'kondisi' => $this->input->post('kondisi'),
-            'user' => $this->input->post('user'),
+            'no_ba' => $this->input->post('no_ba'),
+            'harga' => $this->input->post('harga'),
             'status_kondisi' => $this->input->post('status_kondisi'),
-            'idle' => $this->input->post('idle'),
             'fisik' => $this->input->post('fisik'),
+            'idle' => $this->input->post('idle'),
+            'frek_maintenan' => $frek_maintenan,
+            'tgl_mulai_maintenan' => $tgl_mulai_maintenan,
+            'tgl_jadwal_maintenan' => $tgl_jadwal_maintenan,
             'ket_fisik' => $this->input->post('ket_fisik'),
-            'no_po' => $this->input->post('no_po'),
-            'harga' => $this->input->post('harga')
         ];
 
         $cek = $this->db->get_where('tb_assets', ['id_assets' => $data['id_assets']])->row_array();
@@ -234,28 +276,8 @@ class DataAssets extends CI_Controller
         } else {
         }
 
-        $this->db->set('merk', $data['merk']);
-        $this->db->set('serial_number', $data['serial_number']);
-        $this->db->set('id_pt', $data['id_pt']);
-        $this->db->set('lokasi', $data['lokasi']);
-        $this->db->set('cpu', $data['cpu']);
-        $this->db->set('ram', $data['ram']);
-        $this->db->set('storage', $data['storage']);
-        $this->db->set('gpu', $data['gpu']);
-        $this->db->set('display', $data['display']);
-        $this->db->set('lain', $data['lain']);
-        $this->db->set('qty_id', $data['qty_id']);
-        $this->db->set('tgl_pembelian', $data['tgl_pembelian']);
-        $this->db->set('kondisi', $data['kondisi']);
-        $this->db->set('user', $data['user']);
-        $this->db->set('status_kondisi', $data['status_kondisi']);
-        $this->db->set('idle', $data['idle']);
-        $this->db->set('fisik', $data['fisik']);
-        $this->db->set('ket_fisik', $data['ket_fisik']);
-        $this->db->set('no_po', $data['no_po']);
-        $this->db->set('harga', $data['harga']);
         $this->db->where('id_assets', $data['id_assets']);
-        $this->db->update('tb_assets');
+        $this->db->update('tb_assets', $data);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Assets has been updated successfully!</div>');
         redirect('DataAssets');
@@ -331,7 +353,7 @@ class DataAssets extends CI_Controller
             'pilih_pt' => $this->input->post('pilih_pt'),
             'pilih_category' => $this->input->post('pilih_category'),
             'pilih_kondisi' => $this->input->post('pilih_kondisi'),
-            'cari_lokasi' => $this->input->post('cari_lokasi'),
+            'divisi' => $this->input->post('divisi'),
             'cb_idle' => $this->input->post('cb_idle'),
             'status_unit' => $this->input->post('status_unit')
         ];
@@ -359,27 +381,21 @@ class DataAssets extends CI_Controller
 
         if ($data['data_post']['pilih_pt'] != 'Y') {
             $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
-        } else {
         }
         if ($data['data_post']['pilih_category'] != 'Y') {
             $this->db->where('qty_id', $data['data_post']['pilih_category']);
-        } else {
         }
         if ($data['data_post']['pilih_kondisi'] != 'Y') {
             $this->db->where('kondisi', $data['data_post']['pilih_kondisi']);
-        } else {
         }
-        if ($data['data_post']['cari_lokasi'] != NULL) {
-            $this->db->like('lokasi', $data['data_post']['cari_lokasi'], 'both');
-        } else {
+        if ($data['data_post']['divisi'] != 'Y') {
+            $this->db->where('id_divisi', $data['data_post']['divisi']);
         }
-        if ($data['data_post']['cb_idle'] != NULL) {
+        if ($data['data_post']['cb_idle'] == 'on') {
             $this->db->where('idle', $data['data_post']['cb_idle']);
-        } else {
         }
         if ($data['data_post']['status_unit'] != 'Y') {
             $this->db->where('status_unit', $data['data_post']['status_unit']);
-        } else {
         }
         $this->db->order_by('id_assets', 'DESC');
         $data['data_assets'] = $this->db->get()->result_array();
@@ -425,13 +441,17 @@ class DataAssets extends CI_Controller
 
             if ($field->status_unit == 1 and $field->kondisi == 1) {
                 $aksi = '
-                <a id="detail_aset" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-detail-aset" data-cpu="' . $field->cpu . '" data-ram="' . $field->ram . '" data-storage="' . $field->storage . '" data-gpu="' . $field->gpu . '" data-display="' . $field->display . '" data-lain="' . $field->lain . '"><i class="mdi mdi-eye" style="color: white;"></i></a>
+                <a id="detail_aset" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-detail-aset" data-cpu="' . $field->cpu . '" data-ram="' . $field->ram . '" data-storage="' . $field->storage . '" data-gpu="' . $field->gpu . '" data-display="' . $field->display . '" data-lain="' . $field->lain . '"
+                data-merk="' . $field->merk . '" data-os="' . $field->os . '" data-id_assets="' . $field->id_assets . '">
+                <i class="mdi mdi-eye" style="color: white;"></i></a>
                 <button class="btn btn-sm btn-warning mdi mdi-lead-pencil" onClick="edit_assets(' . $field->id_assets . ')"></button>
                 <button class="btn btn-sm btn-danger mdi mdi-trash-can-outline" onClick="delete_assets(' . $field->id_assets . ',' . $field->qty_id . ')"></button>
                 ';
             } else {
                 $aksi = '
-                <a id="detail_aset" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-detail-aset" data-cpu="' . $field->cpu . '" data-ram="' . $field->ram . '" data-storage="' . $field->storage . '" data-gpu="' . $field->gpu . '" data-display="' . $field->display . '" data-lain="' . $field->lain . '"><i class="mdi mdi-eye" style="color: white;"></i></a>
+                <a id="detail_aset" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-detail-aset" data-cpu="' . $field->cpu . '" data-ram="' . $field->ram . '" data-storage="' . $field->storage . '" data-gpu="' . $field->gpu . '" data-display="' . $field->display . '" data-lain="' . $field->lain . '"
+                data-merk="' . $field->merk . '" data-os="' . $field->os . '" data-id_assets="' . $field->id_assets . '">
+                <i class="mdi mdi-eye" style="color: white;"></i></a>
                 <button class="btn btn-sm btn-warning mdi mdi-lead-pencil" onClick="edit_assets(' . $field->id_assets . ')"></button>
                 ';
             }
@@ -464,71 +484,71 @@ class DataAssets extends CI_Controller
         echo json_encode($output);
     }
 
-    public function filterDataAssets()
-    {
-        $data['title'] = 'Data Assets';
+    // public function filterDataAssets()
+    // {
+    //     $data['title'] = 'Data Assets';
 
-        $data['data_post'] = [
-            'pilih_pt' => $this->input->post('pilih_pt'),
-            'pilih_category' => $this->input->post('pilih_category'),
-            'pilih_kondisi' => $this->input->post('pilih_kondisi'),
-            'cari_lokasi' => $this->input->post('cari_lokasi'),
-            'cb_idle' => $this->input->post('cb_idle2'),
-            'status_unit' => $this->input->post('status_unit')
-        ];
+    //     $data['data_post'] = [
+    //         'pilih_pt' => $this->input->post('pilih_pt'),
+    //         'pilih_category' => $this->input->post('pilih_category'),
+    //         'pilih_kondisi' => $this->input->post('pilih_kondisi'),
+    //         'cari_lokasi' => $this->input->post('cari_lokasi'),
+    //         'cb_idle' => $this->input->post('cb_idle2'),
+    //         'status_unit' => $this->input->post('status_unit')
+    //     ];
 
-        // ket
-        $this->db->select('alias, category');
-        $this->db->from('tb_assets');
-        $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
-        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
-        if ($data['data_post']['pilih_pt'] != 'Y') {
-            $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
-        } else {
-        }
-        if ($data['data_post']['pilih_category'] != 'Y') {
-            $this->db->where('qty_id', $data['data_post']['pilih_category']);
-        } else {
-        }
-        $data['data_assets_ket'] = $this->db->get()->row_array();
+    //     // ket
+    //     $this->db->select('alias, category');
+    //     $this->db->from('tb_assets');
+    //     $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+    //     $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+    //     if ($data['data_post']['pilih_pt'] != 'Y') {
+    //         $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+    //     } else {
+    //     }
+    //     if ($data['data_post']['pilih_category'] != 'Y') {
+    //         $this->db->where('qty_id', $data['data_post']['pilih_category']);
+    //     } else {
+    //     }
+    //     $data['data_assets_ket'] = $this->db->get()->row_array();
 
-        // table
-        $this->db->select('*');
-        $this->db->from('tb_assets');
-        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
-        $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+    //     // table
+    //     $this->db->select('*');
+    //     $this->db->from('tb_assets');
+    //     $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+    //     $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
 
-        if ($data['data_post']['pilih_pt'] != 'Y') {
-            $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
-        } else {
-        }
-        if ($data['data_post']['pilih_category'] != 'Y') {
-            $this->db->where('qty_id', $data['data_post']['pilih_category']);
-        } else {
-        }
-        if ($data['data_post']['pilih_kondisi'] != 'Y') {
-            $this->db->where('kondisi', $data['data_post']['pilih_kondisi']);
-        } else {
-        }
-        if ($data['data_post']['cari_lokasi'] != NULL) {
-            $this->db->like('lokasi', $data['data_post']['cari_lokasi'], 'both');
-        } else {
-        }
-        if ($data['data_post']['cb_idle'] != NULL) {
-            $this->db->where('idle', $data['data_post']['cb_idle']);
-        } else {
-        }
-        if ($data['data_post']['status_unit'] != 'Y') {
-            $this->db->where('status_unit', $data['data_post']['status_unit']);
-        } else {
-        }
-        $this->db->order_by('id_assets', 'DESC');
-        $data['assets'] = $this->db->get()->result_array();
+    //     if ($data['data_post']['pilih_pt'] != 'Y') {
+    //         $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+    //     } else {
+    //     }
+    //     if ($data['data_post']['pilih_category'] != 'Y') {
+    //         $this->db->where('qty_id', $data['data_post']['pilih_category']);
+    //     } else {
+    //     }
+    //     if ($data['data_post']['pilih_kondisi'] != 'Y') {
+    //         $this->db->where('kondisi', $data['data_post']['pilih_kondisi']);
+    //     } else {
+    //     }
+    //     if ($data['data_post']['cari_lokasi'] != NULL) {
+    //         $this->db->like('lokasi', $data['data_post']['cari_lokasi'], 'both');
+    //     } else {
+    //     }
+    //     if ($data['data_post']['cb_idle'] != NULL) {
+    //         $this->db->where('idle', $data['data_post']['cb_idle']);
+    //     } else {
+    //     }
+    //     if ($data['data_post']['status_unit'] != 'Y') {
+    //         $this->db->where('status_unit', $data['data_post']['status_unit']);
+    //     } else {
+    //     }
+    //     $this->db->order_by('id_assets', 'DESC');
+    //     $data['assets'] = $this->db->get()->result_array();
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('admin/data_assets', $data);
-        $this->load->view('templates/footer');
-    }
+    //     $this->load->view('templates/header', $data);
+    //     $this->load->view('templates/topbar', $data);
+    //     $this->load->view('templates/sidebar', $data);
+    //     $this->load->view('admin/data_assets', $data);
+    //     $this->load->view('templates/footer');
+    // }
 }

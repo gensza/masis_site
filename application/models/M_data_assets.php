@@ -6,8 +6,8 @@ class M_data_assets extends CI_Model
 {
 
     var $table = 'tb_assets'; //nama tabel dari database
-    var $column_order = array(null, 'id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain'); //field yang ada di table user
-    var $column_search = array('id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain'); //field yang diizin untuk pencarian 
+    var $column_order = array(null, 'id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain', 'merk', 'os'); //field yang ada di table user
+    var $column_search = array('id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain', 'merk', 'os'); //field yang diizin untuk pencarian 
     var $order = array('id_assets' => 'asc'); // default order 
 
     public function __construct()
@@ -18,9 +18,37 @@ class M_data_assets extends CI_Model
 
     private function _get_datatables_query()
     {
+        $data_filter = [
+            'pilih_pt' => $this->input->post('pilih_pt'),
+            'pilih_category' => $this->input->post('pilih_category'),
+            'pilih_kondisi' => $this->input->post('pilih_kondisi'),
+            'divisi' => $this->input->post('divisi'),
+            'cb_idle' => $this->input->post('cb_idle2'),
+            'status_unit' => $this->input->post('status_unit')
+        ];
 
         $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
         $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+
+        if ($data_filter['pilih_pt'] != 'Y') {
+            $this->db->where('tb_assets.id_pt', $data_filter['pilih_pt']);
+        }
+        if ($data_filter['pilih_category'] != 'Y') {
+            $this->db->where('tb_assets.qty_id', $data_filter['pilih_category']);
+        }
+        if ($data_filter['pilih_kondisi'] != 'Y') {
+            $this->db->where('kondisi', $data_filter['pilih_kondisi']);
+        }
+        if ($data_filter['divisi'] != 'Y') {
+            $this->db->where('id_divisi', $data_filter['divisi']);
+        }
+        if ($data_filter['cb_idle'] == 'on') {
+            $this->db->where('idle', $data_filter['cb_idle']);
+        }
+        if ($data_filter['status_unit'] != 'Y') {
+            $this->db->where('status_unit', $data_filter['status_unit']);
+        }
+
         $this->db->order_by('id_assets', 'DESC');
         $this->db->from($this->table);
 
