@@ -140,7 +140,7 @@
                 </div> <!-- end col-->
             </div>
             <div class="row">
-                <div class="col-lg-4 col-6">
+                <div class="col-lg-3 col-6">
                     <div class="widget-rounded-circle card-box">
                         <div class="row">
                             <div class="col-4">
@@ -157,7 +157,7 @@
                         <p class="text-muted mt-1 mb-0 text-truncate">permintaan Peminjaman</p>
                     </div> <!-- end widget-rounded-circle-->
                 </div> <!-- end col-->
-                <div class="col-lg-4 col-6">
+                <div class="col-lg-3 col-6">
                     <div class="widget-rounded-circle card-box">
                         <div class="row">
                             <div class="col-4">
@@ -175,7 +175,7 @@
                         <p class="text-muted mt-1 mb-0 text-truncate">Permintaan Ditolak</p>
                     </div> <!-- end widget-rounded-circle-->
                 </div> <!-- end col-->
-                <div class="col-lg-4 col-12">
+                <div class="col-lg-3 col-6">
                     <div class="widget-rounded-circle card-box">
                         <div class="row">
                             <div class="col-4">
@@ -191,6 +191,24 @@
                             </div>
                         </div> <!-- end row-->
                         <p class="text-muted mt-1 mb-0 text-truncate">Permintaan Pengembalian</p>
+                    </div> <!-- end widget-rounded-circle-->
+                </div> <!-- end col-->
+                <div class="col-lg-3 col-6">
+                    <div class="widget-rounded-circle card-box">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="avatar-lg rounded-circle bg-danger border-danger border shadow">
+                                    <i class="fe-alert-triangle font-22 avatar-title text-white"></i>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="text-right">
+                                    <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= $assets_maintenance ?></span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div> <!-- end row-->
+                        <p class="text-muted mt-1 mb-0 text-truncate">Assets Maintenance</p>
                     </div> <!-- end widget-rounded-circle-->
                 </div> <!-- end col-->
             </div>

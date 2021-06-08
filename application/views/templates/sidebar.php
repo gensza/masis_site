@@ -1,4 +1,7 @@
 <!-- ========== Left Sidebar Start ========== -->
+<?php
+$date_today = date('Y-m-d');
+?>
 <div class="left-side-menu">
     <div class="h-100" data-simplebar>
         <!--- Sidemenu -->
@@ -57,9 +60,9 @@
                     </li>
 
                     <li>
-                        <a href="<?= base_url('#') ?>">
+                        <a href="<?= base_url('Maintenance') ?>">
                             <i class="mdi mdi-alert"></i>
-                            <span class="badge badge-danger float-right">5</span>
+                            <span class="badge badge-danger float-right"><?= $this->db->query("SELECT id_assets FROM tb_assets WHERE status_maintenan = 0 AND tgl_jadwal_maintenan <= '$date_today' ")->num_rows(); ?> </span>
                             <span>Maintenance</span>
                         </a>
                     </li>

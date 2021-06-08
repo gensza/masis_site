@@ -212,11 +212,11 @@
                                             <label class="custom-control-label" for="customCheck1">Idle?</label>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row maintenance">
                                         <div class="form-group col-3">
                                             <label for="">Frekuensi Maintenance</label>
                                             <div class="row">
-                                                <input type="number" name="frek_maintenan" class="form-control col-6 ml-2" value="<?= $a['frek_maintenan'] ?>" placeholder="jumlah hari">
+                                                <input type="number" name="frek_maintenan" id="frek_maintenan" class="form-control col-6 ml-2" value="<?= $a['frek_maintenan'] ?>" placeholder="jumlah hari">
                                                 <label class="col-5 ml-0 mt-1">Hari</label>
                                             </div>
                                         </div>
@@ -247,6 +247,11 @@
 
         <script>
             $(document).ready(function() {
+
+                $("#frek_maintenan").keyup(function() {
+                    $('.maintenance').find('#tgl_mulai_maintenan').attr('required', '');
+                });
+
                 //pertama kali muncul Devisi
                 var id_pt = $('#id_pt').val();
                 var id_divisi = $('#divisi').val();

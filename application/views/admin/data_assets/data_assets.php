@@ -19,45 +19,6 @@
                     <?= $this->session->flashdata('message'); ?>
                     <div class="card">
                         <div class="card-body">
-                            <!-- <div class="row">
-                                <div class="col-lg-4 col-12">
-                                    <form action="<?= base_url('DataAssets') ?>" method="POST">
-                                        <div class="row">
-                                            <div class="col-lg-8 col-6">
-                                                <select name="filter" id="category" class="form-control">
-                                                    <option selected disabled>- Select category - </option>
-                                                    <?php foreach ($category as $c) : ?>
-                                                        <option value="<?= $c['id_qty'] ?>"><?= $c['category'] ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                            <div class="col-1">
-                                                <button type="submit" class="btn btn-sm btn-primary">filter</button>
-                                            </div>
-                                        </div>
-                                        <p class="mt-1">Filter : <?= $filtered ?></p>
-                                    </form>
-                                </div>
-                                <div class="col-lg-4 col-12">
-                                    <form action="<?= base_url('DataAssets/filterPt') ?>" method="POST">
-                                        <div class="row">
-                                            <div class="col-lg-8 col-6">
-                                                <select name="filter" id="category" class="form-control" required>
-                                                    <option value="" selected disabled>- Select PT - </option>
-                                                    <?php foreach ($pt as $pt) : ?>
-                                                        <option value="<?= $pt['id_pt'] ?>"><?= $pt['alias'] ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
-                                            <div class="col-1">
-                                                <button type="submit" class="btn btn-sm btn-info">filter</button>
-                                            </div>
-                                        </div>
-                                        <p class="mt-1">Filter : <?= $filtered2 ?></p>
-                                    </form>
-                                </div>
-                            </div> -->
-
                             <div class="row mb-3">
                                 <div class="col-lg-8 col-4">
                                     <h4 class="header-title">Data Table</h4>
@@ -266,8 +227,7 @@
     <script>
         var table;
 
-        function cetak_report()
-        {
+        function cetak_report() {
             $('#modalReport').modal('hide');
         }
 
@@ -355,9 +315,9 @@
 
         function filter_assets() {
             //datatables
-            
+
             $('#modalFilter').modal('hide');
-            
+
             var idel;
             $('input[name="filter_cb_idle2"]:checked').each(function() {
                 idel = $(this).val()

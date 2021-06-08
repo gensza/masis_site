@@ -71,6 +71,12 @@ class Admin extends CI_Controller
         $this->db->from('tb_lend_assets');
         $data['rejected'] = $this->db->count_all_results();
 
+        $date_today = date('Y-m-d');
+        $this->db->select('id_assets');
+        $this->db->where(['status_maintenan' => 0, 'tgl_jadwal_maintenan <=' => $date_today]);
+        $this->db->from('tb_assets');
+        $data['assets_maintenance'] = $this->db->get()->num_rows();
+
         $data['assets_data'] = $this->db->get('tb_qty_assets')->result_array();
 
         $this->load->view('templates/header', $data);
