@@ -51,7 +51,7 @@ class M_data_assets_maintenance extends CI_Model
                   $this->db->where('status_unit', $data_filter['status_unit']);
             }
 
-            $this->db->where(['status_maintenan' => 0, 'tgl_jadwal_maintenan <=' => $date_today]);
+            $this->db->where(['status_maintenan' => 0, 'tgl_jadwal_maintenan <=' => $date_today, 'tgl_jadwal_maintenan !=' => '1970-01-01']);
             $this->db->order_by('id_assets', 'DESC');
             $this->db->from($this->table);
 

@@ -62,7 +62,7 @@ $date_today = date('Y-m-d');
                     <li>
                         <a href="<?= base_url('Maintenance') ?>">
                             <i class="mdi mdi-alert"></i>
-                            <span class="badge badge-danger float-right"><?= $this->db->query("SELECT id_assets FROM tb_assets WHERE status_maintenan = 0 AND tgl_jadwal_maintenan <= '$date_today' ")->num_rows(); ?> </span>
+                            <span class="badge badge-danger float-right"><?= $this->db->query("SELECT id_assets FROM tb_assets WHERE status_maintenan = 0 AND tgl_jadwal_maintenan <= '$date_today' AND tgl_jadwal_maintenan != '1970-01-01' ")->num_rows(); ?> </span>
                             <span>Maintenance</span>
                         </a>
                     </li>

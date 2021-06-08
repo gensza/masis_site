@@ -73,7 +73,7 @@ class Admin extends CI_Controller
 
         $date_today = date('Y-m-d');
         $this->db->select('id_assets');
-        $this->db->where(['status_maintenan' => 0, 'tgl_jadwal_maintenan <=' => $date_today]);
+        $this->db->where(['status_maintenan' => 0, 'tgl_jadwal_maintenan <=' => $date_today, 'tgl_jadwal_maintenan !=' => '1970-01-01']);
         $this->db->from('tb_assets');
         $data['assets_maintenance'] = $this->db->get()->num_rows();
 
