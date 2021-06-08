@@ -212,6 +212,26 @@
                     </div> <!-- end widget-rounded-circle-->
                 </div> <!-- end col-->
             </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-box">
+                        <div class="card-widgets">
+                            <a data-toggle="collapse" href="#cardCollpase2" role="button" aria-expanded="false" aria-controls="cardCollpase2"><i class="mdi mdi-minus"></i></a>
+                        </div>
+                        <h4 class="mt-0 font-16">Data Assets Berdasarkan Kategori</i></h4>
+
+                        <div class="col-12">
+                            <div id="cardCollpase2" class="collapse show">
+                                <div class="text-center">
+                                    <canvas id="sum_log"></canvas>
+                                </div>
+                            </div> <!-- collapsed end -->
+                        </div> <!-- end col-->
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-12">
                     <div class="card-box">
@@ -354,3 +374,81 @@
             <!-- end page title -->
         </div> <!-- container -->
     </div> <!-- content -->
+
+    <script>
+        var sum_log = document.getElementById('sum_log').getContext('2d');
+        var myChart = new Chart(sum_log, {
+            type: 'bar',
+            data: {
+                labels: [
+                    <?php
+                    $count = count($count_assets);
+                    for ($i = 0; $i < $count; $i++) {
+                        echo "'" . $count_assets[$i]->category . "'" . ',';
+                    }
+                    ?>
+                ],
+                datasets: [{
+                    data: [
+                        <?php
+                        $count = count($count_assets);
+                        for ($i = 0; $i < $count; $i++) {
+                            echo $count_assets[$i]->total . ',';
+                        }
+                        ?>
+                    ],
+                    backgroundColor: [
+                        <?php
+                        $count = count($count_assets);
+                        for ($i = 1; $i <= $count; $i++) {
+                            echo "'rgba(0,128,0,0." . $i . ")'" . ',';
+                        }
+                        ?>
+                    ],
+                    borderColor: [
+                        <?php
+                        $count = count($count_assets);
+                        for ($i = 1; $i <= $count; $i++) {
+                            echo "'rgba(0,128,0,1)'" . ',';
+                        }
+                        ?>
+                    ],
+                    borderWidth: 1
+                }],
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'SUMMARY DATA ASSETS'
+                },
+                legend: {
+                    display: false
+                },
+                animation: {
+                    duration: 500,
+                    easing: "easeOutQuart",
+                    onComplete: function() {
+                        var ctx = this.chart.ctx;
+                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'bottom';
+
+                        this.data.datasets.forEach(function(dataset) {
+                            for (var i = 0; i < dataset.data.length; i++) {
+                                var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                                    scale_max = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale.maxHeight;
+                                ctx.fillStyle = '#444';
+                                var y_pos = model.y - 5;
+                                // Make sure data value does not get overflown and hidden
+                                // when the bar's value is too close to max value of scale
+                                // Note: The y value is reverse, it counts from top down
+                                if ((scale_max - model.y) / scale_max >= 0.93)
+                                    y_pos = model.y + 20;
+                                ctx.fillText(dataset.data[i], model.x, y_pos);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    </script>

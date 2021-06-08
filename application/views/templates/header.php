@@ -28,6 +28,10 @@
 
     <!-- icons -->
     <link href="<?= base_url() ?>/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- chart js -->
+    <script src="<?= base_url() ?>assets/js/chart.js"></script>
+
 </head>
 
 <body class="loading" data-layout='{"mode": "light", "width": "fluid", "menuPosition": "fixed", "sidebar": { "color": "light", "size": "default", "showuser": false}, "topbar": {"color": "dark"}, "showRightSidebarOnPageLoad": true}'>

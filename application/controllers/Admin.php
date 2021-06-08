@@ -79,6 +79,15 @@ class Admin extends CI_Controller
 
         $data['assets_data'] = $this->db->get('tb_qty_assets')->result_array();
 
+        $this->db->select('tb_qty_assets.category, COUNT(qty_id) AS total');
+        $this->db->from('tb_assets');
+        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id');
+        $this->db->group_by('qty_id');
+        $this->db->order_by('total', 'ASC');
+        $data['count_assets'] = $this->db->get()->result();
+        // var_dump($data['count_assets2']);
+        // die;
+
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('templates/sidebar', $data);
