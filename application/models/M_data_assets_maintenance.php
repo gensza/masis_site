@@ -6,8 +6,8 @@ class M_data_assets_maintenance extends CI_Model
 {
 
       var $table = 'tb_assets'; //nama tabel dari database
-      var $column_order = array(null, 'id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain', 'merk', 'os'); //field yang ada di table user
-      var $column_search = array('id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain', 'merk', 'os'); //field yang diizin untuk pencarian 
+      var $column_order = array(null, 'id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain', 'merk', 'os', 'frek_maintenan', 'tgl_mulai_maintenan', 'tgl_jadwal_maintenan'); //field yang ada di table user
+      var $column_search = array('id_assets', 'kode_assets', 'merk', 'tb_qty_assets.category', 'qty_id', 'serial_number', 'tb_pt.alias', 'lokasi', 'idle', 'user', 'kondisi', 'status_unit', 'cpu', 'ram', 'storage', 'gpu', 'display', 'lain', 'merk', 'os', 'frek_maintenan', 'tgl_mulai_maintenan', 'tgl_jadwal_maintenan'); //field yang diizin untuk pencarian 
       var $order = array('id_assets' => 'asc'); // default order 
 
       public function __construct()

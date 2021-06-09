@@ -7,7 +7,7 @@ $date_today = date('Y-m-d');
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <ul id="side-menu">
-                <?php if ($this->session->userdata('email')) { ?>
+                <?php if ($this->session->userdata('username')) { ?>
                     <li class="menu-title">Admin</li>
                     <li>
                         <a href="<?= base_url('Admin') ?>">
@@ -74,10 +74,10 @@ $date_today = date('Y-m-d');
                         </a>
                     </li>
                 <?php } ?>
-                <?php if (!$this->session->userdata('email')) { ?>
+                <?php if (!$this->session->userdata('username')) { ?>
                     <li class="menu-title">Users</li>
                     <li>
-                        <a href="http://mips.msalgroup.com/msal-login/">
+                        <a href="<?= base_url('Auth') ?>">
                             <i class="mdi mdi-login"></i>
                             <span> Admin </span>
                         </a>

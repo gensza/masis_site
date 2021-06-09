@@ -17,11 +17,11 @@ class Auth extends CI_Controller
 	public function index()
 	{
 		// jika sudah login tidak bisa ke view login
-		if ($this->session->userdata('email')) {
-			redirect('Users');
+		if ($this->session->userdata('username')) {
+			redirect('Admin');
 		}
 		// validasi inputan
-		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
+		$this->form_validation->set_rules('username', 'username', 'required|trim');
 		$this->form_validation->set_rules('password', 'Password', 'required|trim');
 		if ($this->form_validation->run() == false) {
 			$data['title'] = 'Login';
@@ -37,13 +37,13 @@ class Auth extends CI_Controller
 	private function _login()
 	{
 		// jika sudah login tidak bisa ke view login
-		if ($this->session->userdata('email')) {
-			redirect('Users');
+		if ($this->session->userdata('username')) {
+			redirect('Admin');
 		}
-		$email = $this->input->post('email');
+		$username = $this->input->post('username');
 		$password = $this->input->post('password');
-		// cek email dari inputan
-		$user = $this->db->get_where('user', ['email' => $email])->row_array();
+		// cek username dari inputan
+		$user = $this->db->get_where('user', ['username' => $username])->row_array();
 		//jika user nya ada
 		if ($user) {
 			// jika usernya aktif
@@ -51,7 +51,7 @@ class Auth extends CI_Controller
 				// cek password, jika benar akan masuk dan set session lalu di redirect
 				if (password_verify($password, $user['password'])) {
 					$data = [
-						'email' => $user['email'],
+						'username' => $user['username'],
 						'role_id' => $user['role_id'],
 						'id_pt' => $user['id_pt']
 					];
@@ -79,16 +79,18 @@ class Auth extends CI_Controller
 	public function registration()
 	{
 		$this->form_validation->set_rules('name', 'Name', 'required|trim');
-		$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
+		$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|is_unique[user.username]', [
 			'is_unique' => 'This email has already registered!'
 		]);
 		// trim = manghapus spasi lebih, valid_email = jika format email salah, is_unique = untuk cek ke DB apakah sudah ada atau belum
-		$this->form_validation->set_rules('password1', 'Password', 'required|trim|min_length[3]|matches[password2]', [
-			'matches' => 'Password dont match!',
-			'min_length' => 'Password too short!'
+		$this->form_validation->set_rules('password1', 'Password', 'required|trim|matches[password2]', [
+			'matches' => 'Password dont match!'
 		]);
-		$this->form_validation->set_rules('password2', 'Password', 'required|trim|min_length[3]|matches[password1]');
+		$this->form_validation->set_rules('password2', 'Password', 'required|trim|matches[password1]');
 		if ($this->form_validation->run() == false) {
+
+			$data['pt'] = $this->db->get('tb_pt')->result_array();
+
 			$data['title'] = 'Registration';
 			$this->load->view('templates/auth_header', $data);
 			$this->load->view('auth/registration');
@@ -98,6 +100,8 @@ class Auth extends CI_Controller
 			$data = [
 				'name' => htmlspecialchars($this->input->post('name', true)),
 				'email' => htmlspecialchars($this->input->post('email', true)),
+				'id_pt' => htmlspecialchars($this->input->post('id_pt', true)),
+				'username' => htmlspecialchars($this->input->post('username', true)),
 				'image' => 'default.jpg',
 				'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
 				'role_id' => 2,

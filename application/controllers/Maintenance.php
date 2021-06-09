@@ -12,7 +12,7 @@ class Maintenance extends CI_Controller
 
             $this->load->model('M_data_assets_maintenance');
 
-            if (!$this->session->userdata('email')) {
+            if (!$this->session->userdata('username')) {
                   redirect('Auth');
             }
 
@@ -43,31 +43,9 @@ class Maintenance extends CI_Controller
             $no = $_POST['start'];
             foreach ($list as $field) {
 
-                  //idle
-                  if ($field->idle  == 'on') {
-                        $idle = 'Ya';
-                  } else {
-                        $idle = '';
-                  }
-
-                  //kondisi
-                  if ($field->kondisi == 1) {
-                        $kondisi = 'BAIK';
-                  } else {
-                        $kondisi = 'RUSAK';
-                  }
-
-                  //status
-                  if ($field->kondisi == 1 and $field->status_unit == 1) {
-                        $status = '<p style="color: green;"><b>Tersedia!</b></p>';
-                  } else if ($field->kondisi == 0) {
-                        $status = '<p style="color: red;"><b>Rusak</b></p>';
-                  } else {
-                        $status = '<p style="color: blue;"><b>Dipinjam</b></p>';
-                  }
+                  $frek = $field->frek_maintenan . ' Hari';
 
                   $maintenance = '<span class="badge-danger"><b> Not&nbsp;Maintained! </b></span>';
-
 
                   $aksi = '<a id="detail_aset" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modal-detail-aset" data-cpu="' . $field->cpu . '" data-ram="' . $field->ram . '" data-storage="' . $field->storage . '" data-gpu="' . $field->gpu . '" data-display="' . $field->display . '" data-lain="' . $field->lain . '" data-merk="' . $field->merk . '" data-os="' . $field->os . '" data-id_assets="' . $field->id_assets . '"><i class="mdi mdi-eye" style="color: white;"></i></a>';
 
@@ -80,10 +58,10 @@ class Maintenance extends CI_Controller
                   $row[] = $field->serial_number;
                   $row[] = $field->alias;
                   $row[] = $field->lokasi;
-                  $row[] = $idle;
                   $row[] = $field->user;
-                  $row[] = $kondisi;
-                  $row[] = $status;
+                  $row[] = $frek;
+                  $row[] = date("d-m-Y", strtotime($field->tgl_mulai_maintenan));
+                  $row[] = date("d-m-Y", strtotime($field->tgl_jadwal_maintenan));
                   $row[] = $maintenance;
                   $row[] = $aksi;
 

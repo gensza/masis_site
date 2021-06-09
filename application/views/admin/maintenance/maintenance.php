@@ -35,10 +35,10 @@
                                                             <th>Serial Number</th>
                                                             <th>PT</th>
                                                             <th>Lokasi</th>
-                                                            <th>Idle</th>
                                                             <th>User</th>
-                                                            <th>Kondisi</th>
-                                                            <th>Status</th>
+                                                            <th>Frekuensi Maintenance</th>
+                                                            <th>Tgl Mulai Maintenance</th>
+                                                            <th>Tgl Jadwal Maintenance</th>
                                                             <th>Maintenance</th>
                                                             <th>Opsi</th>
                                                       </tr>

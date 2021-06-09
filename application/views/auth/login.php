@@ -14,14 +14,11 @@
                                 <?= $this->session->flashdata('message') ?>
                                 <form class="user" method="POST" action="<?php base_url('Auth/index') ?>">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-user" id="email"
-                                            name="email" aria-describedby="emailHelp"
-                                            placeholder="Enter Email Address...">
-                                        <?= form_error('email', '<small class="text-danger pl-3">', '</small>') ?>
+                                        <input type="text" class="form-control form-control-user" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter Username...">
+                                        <?= form_error('username', '<small class="text-danger pl-3">', '</small>') ?>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user" id="password"
-                                            name="password" placeholder="Password">
+                                        <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
                                         <?= form_error('password', '<small class="text-danger pl-3">', '</small>') ?>
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
@@ -30,7 +27,7 @@
                                 </form>
                                 <hr>
                                 <div class="text-center">
-                                    <!-- <a class="small" href="<?= base_url('auth/registration') ?>">Create an Account!</a> -->
+                                    <a class="small" href="<?= base_url('auth/registration') ?>">Create an Account!</a>
                                 </div>
                             </div>
                         </div>

@@ -15,7 +15,7 @@ class DataPeminjaman extends CI_Controller
         //     redirect('http://mips.msalgroup.com/msal-login/');
         // }
 
-        if (!$this->session->userdata('email')) {
+        if (!$this->session->userdata('username')) {
             redirect('Auth');
         }
 
