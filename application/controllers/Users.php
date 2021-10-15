@@ -12,7 +12,7 @@ class Users extends CI_Controller
 
     public function index()
     {
-        $db2 = $this->load->database('db2', TRUE);
+        // $db2 = $this->load->database('db2', TRUE);
 
         $data['title'] = 'Pinjam Assets';
         $this->db->select('*');
@@ -22,7 +22,7 @@ class Users extends CI_Controller
         $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_lend_assets.qty_id', 'left');
         $this->db->order_by('id_lend', 'DESC');
         $data['assets'] = $this->db->get()->result_array();
-        $data['users_ho'] = $db2->get('user_ho')->result_array();
+        // $data['users_ho'] = $db2->get('user_ho')->result_array();
         $data['category'] = $this->db->get('tb_qty_assets')->result_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);

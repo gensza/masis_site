@@ -18,12 +18,13 @@ class DataUsers extends CI_Controller
 
     public function index()
     {
-        $db2 = $this->load->database('db2', TRUE);
+        // $db2 = $this->load->database('db2', TRUE);
 
         $data['title'] = 'Data Users';
         $data['users'] = $this->db->get('tb_users')->result_array();
 
-        $data['users_ho'] = $db2->get('user_ho')->result_array();
+        // $data['users_ho'] = $db2->get('user_ho')->result_array();
+        $data['users_ho'] = [];
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
