@@ -3,12 +3,10 @@
     <div class="container-fluid">
         <ul class="list-unstyled topnav-menu float-right mb-0">
             <li class="dropdown notification-list topbar-dropdown">
-                <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown"
-                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <img src="<?= base_url() ?>/assets/images/users/default.jpg" alt="user-image"
-                        class="rounded-circle">
+                <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <img src="<?= base_url() ?>/assets/images/users/default.jpg" alt="user-image" class="rounded-circle">
                     <span class="pro-user-name ml-1">
-                        Hii, Users <i class="mdi mdi-chevron-down"></i>
+                        Hii, <?= $this->session->userdata('username') ?> <i class="mdi mdi-chevron-down"></i>
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -33,7 +31,7 @@
                     </a>
                     <div class="dropdown-divider"></div>
                     <!-- item-->
-                    <a href="#" class="dropdown-item notify-item">
+                    <a href="<?= base_url('Auth/logout') ?>" class="dropdown-item notify-item">
                         <i class="fe-log-out"></i>
                         <span>Logout</span>
                     </a>

@@ -8,6 +8,13 @@ class Auth extends CI_Controller
 		// menjalankan method ketika class Auth dijalankan
 		parent::__construct();
 		$this->load->library('form_validation');
+		$this->db_center = $this->load->database('db_center', true);
+
+		$this->db_masis_msal = $this->load->database('db_masis_msal', true);
+		$this->db_masis_mapa = $this->load->database('db_masis_mapa', true);
+		$this->db_masis_peak = $this->load->database('db_masis_peak', true);
+		$this->db_masis_psam = $this->load->database('db_masis_psam', true);
+		$this->db_masis_kpp = $this->load->database('db_masis_kpp', true);
 
 		// if (!$this->session->userdata('userlogin')) {
 		// 	redirect('http://mips.msalgroup.com/msal-login/');
@@ -16,6 +23,8 @@ class Auth extends CI_Controller
 
 	public function index()
 	{
+		$data['pt'] = $this->db_center->get('tb_pt')->result_array();
+
 		// jika sudah login tidak bisa ke view login
 		if ($this->session->userdata('username')) {
 			redirect('Admin');
@@ -42,8 +51,31 @@ class Auth extends CI_Controller
 		}
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
+
+		$kode_pt_login = $this->input->post('kode_pt');
+
+		// cari kode pt di tb central
+		$data['get_tb_pt_central'] = $this->db_center->get_where('tb_pt', array('kode_pt' => $kode_pt_login))->row_array();
+
+		$pt_login = FALSE;
+		if ($data['get_tb_pt_central']['alias'] == 'MSAL') {
+			// $pt_login = 'db_masis_msal';
+			redirect('Auth/blocked');
+		} else if ($data['get_tb_pt_central']['alias'] == 'MAPA') {
+			// $pt_login = 'db_masis_mapa';
+			redirect('Auth/blocked');
+		} else if ($data['get_tb_pt_central']['alias'] == 'PEAK') {
+			$pt_login = 'db_masis_peak';
+		} else if ($data['get_tb_pt_central']['alias'] == 'PSAM') {
+			// $pt_login = 'db_masis_psam';
+			redirect('Auth/blocked');
+		} else if ($data['get_tb_pt_central']['alias'] == 'KPP') {
+			// $pt_login = 'db_masis_kpp';
+			redirect('Auth/blocked');
+		}
+
 		// cek username dari inputan
-		$user = $this->db->get_where('user', ['username' => $username, 'is_active' => 1])->row_array();
+		$user = $this->$pt_login->get_where('user', ['username' => $username, 'is_active' => 1])->row_array();
 		//jika user nya ada
 		if ($user) {
 			// jika usernya aktif
@@ -53,7 +85,8 @@ class Auth extends CI_Controller
 					$data = [
 						'username' => $user['username'],
 						'role_id' => $user['role_id'],
-						'id_pt' => $user['id_pt']
+						'id_pt' => $user['id_pt'],
+						'app_pt' => $data['get_tb_pt_central']['alias'], //MSAL, MAPA, PSAM, PEAK, KPP
 					];
 					$this->session->set_userdata($data);
 					// role_id 1 = admin

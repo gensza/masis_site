@@ -258,7 +258,7 @@
                                         <td>
                                             <?php
                                             $result = "SELECT COUNT(idle) as idle FROM tb_assets WHERE qty_id = $q[id_qty] AND idle = 'on'";
-                                            $count = $this->db->query($result)->row_array();
+                                            $count = $this->db_masis_pt->query($result)->row_array();
                                             // var_dump($count);
                                             echo $count['idle'];
                                             ?>
@@ -266,7 +266,7 @@
                                         <td>
                                             <?php
                                             $result = "SELECT COUNT(status_unit) as pinjam FROM tb_assets WHERE qty_id = $q[id_qty] AND status_unit = 0";
-                                            $count = $this->db->query($result)->row_array();
+                                            $count = $this->db_masis_pt->query($result)->row_array();
                                             // var_dump($count);
                                             echo $count['pinjam'];
                                             ?>

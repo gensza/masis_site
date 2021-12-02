@@ -21,6 +21,19 @@
                                         <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
                                         <?= form_error('password', '<small class="text-danger pl-3">', '</small>') ?>
                                     </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="kode_pt" name="kode_pt" required>
+                                            <option value="" selected disabled>--pilih PT--</option>
+                                            <?php
+                                            foreach ($pt as $d) : {
+                                            ?>
+                                                    <option value="<?= $d['kode_pt']; ?>"><?= $d['nama_pt']; ?></option>
+                                            <?php
+                                                }
+                                            endforeach;
+                                            ?>
+                                        </select>
+                                    </div>
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                         Login
                                     </button>

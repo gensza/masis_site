@@ -10,6 +10,10 @@ class Maintenance extends CI_Controller
             // menjalankan method ketika class Auth dijalankan
             parent::__construct();
 
+            $db_pt = check_db_pt();
+
+            $this->db_masis_pt = $this->load->database('db_masis_' . $db_pt, TRUE);
+
             $this->load->model('M_data_assets_maintenance');
 
             if (!$this->session->userdata('username')) {
@@ -24,10 +28,10 @@ class Maintenance extends CI_Controller
             $data['title'] = 'Data Assets';
 
             $sess_user = $this->session->userdata('id_pt');
-            $data['pt_report'] = $this->db->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
-            $data['pt_filter'] = $this->db->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
+            $data['pt_report'] = $this->db_masis_pt->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
+            $data['pt_filter'] = $this->db_masis_pt->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
 
-            $data['category'] = $this->db->get('tb_qty_assets')->result_array();
+            $data['category'] = $this->db_masis_pt->get('tb_qty_assets')->result_array();
 
             $this->load->view('templates/header', $data);
             $this->load->view('templates/topbar', $data);

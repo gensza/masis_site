@@ -7,6 +7,10 @@ class DataAssets extends CI_Controller
     {
         // menjalankan method ketika class Auth dijalankan
         parent::__construct();
+        $db_pt = check_db_pt();
+
+        $this->db_masis_pt = $this->load->database('db_masis_' . $db_pt, TRUE);
+
         $this->load->library('form_validation');
 
         $this->load->model('M_data_assets');
@@ -31,13 +35,13 @@ class DataAssets extends CI_Controller
         // $data['filtered'] = 'no filter detected ..';
         // $data['filtered2'] = 'no filter detected ..';
 
-        // $data['pt'] = $this->db->get('tb_pt')->result_array();
-        // $data['pt_add'] = $this->db->get('tb_pt')->result_array();
+        // $data['pt'] = $this->db_masis_pt->get('tb_pt')->result_array();
+        // $data['pt_add'] = $this->db_masis_pt->get('tb_pt')->result_array();
         $sess_user = $this->session->userdata('id_pt');
-        $data['pt_report'] = $this->db->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
-        $data['pt_filter'] = $this->db->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
+        $data['pt_report'] = $this->db_masis_pt->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
+        $data['pt_filter'] = $this->db_masis_pt->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
 
-        $data['category'] = $this->db->get('tb_qty_assets')->result_array();
+        $data['category'] = $this->db_masis_pt->get('tb_qty_assets')->result_array();
 
         // if ($this->input->post('filter') == "filter") {
         //     $data_filter = [
@@ -65,8 +69,8 @@ class DataAssets extends CI_Controller
         $data['title'] = 'Input Assets';
 
         $sess_user = $this->session->userdata('id_pt');
-        $data['pt'] = $this->db->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
-        $data['category'] = $this->db->get('tb_qty_assets')->result_array();
+        $data['pt'] = $this->db_masis_pt->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
+        $data['category'] = $this->db_masis_pt->get('tb_qty_assets')->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
@@ -84,7 +88,7 @@ class DataAssets extends CI_Controller
 
     public function select_get_pt()
     {
-        $data = $this->db->get('tb_pt')->result_array();
+        $data = $this->db_masis_pt->get('tb_pt')->result_array();
 
         echo json_encode($data);
     }
@@ -97,21 +101,21 @@ class DataAssets extends CI_Controller
     //     $data['title'] = 'Data Assets';
     //     $data['filtered'] = 'no filter detected ..';
 
-    //     $data['pt'] = $this->db->get('tb_pt')->result_array();
-    //     $data['pt_add'] = $this->db->get('tb_pt')->result_array();
-    //     $data['category'] = $this->db->get('tb_qty_assets')->result_array();
+    //     $data['pt'] = $this->db_masis_pt->get('tb_pt')->result_array();
+    //     $data['pt_add'] = $this->db_masis_pt->get('tb_pt')->result_array();
+    //     $data['category'] = $this->db_masis_pt->get('tb_qty_assets')->result_array();
 
     //     $id = $this->input->post('filter');
-    //     $data['filter'] = $this->db->get_where('tb_pt', ['id_pt' => $id])->row_array();
+    //     $data['filter'] = $this->db_masis_pt->get_where('tb_pt', ['id_pt' => $id])->row_array();
     //     $data['filtered2'] = $data['filter']['alias'];
 
-    //     $this->db->select('*');
-    //     $this->db->from('tb_assets');
-    //     $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
-    //     $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
-    //     $this->db->where('tb_assets.id_pt', $id);
-    //     $this->db->order_by('id_assets', 'DESC');
-    //     $data['assets']  = $this->db->get()->result_array();
+    //     $this->db_masis_pt->select('*');
+    //     $this->db_masis_pt->from('tb_assets');
+    //     $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+    //     $this->db_masis_pt->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+    //     $this->db_masis_pt->where('tb_assets.id_pt', $id);
+    //     $this->db_masis_pt->order_by('id_assets', 'DESC');
+    //     $data['assets']  = $this->db_masis_pt->get()->result_array();
 
     //     $this->load->view('templates/header', $data);
     //     $this->load->view('templates/topbar', $data);
@@ -178,17 +182,17 @@ class DataAssets extends CI_Controller
                 'ket_fisik' => $this->input->post('ket_fisik'),
                 'date_created' => date('Y-m-d H:i:s')
             ];
-            $this->db->insert('tb_assets', $data);
+            $this->db_masis_pt->insert('tb_assets', $data);
 
             if ($data['kondisi'] == 1) {
-                $this->db->set('qty', 'qty+1', FALSE);
-                $this->db->set('tersedia', 'tersedia+1', FALSE);
-                $this->db->where('id_qty', $data['qty_id']);
-                $this->db->update('tb_qty_assets');
+                $this->db_masis_pt->set('qty', 'qty+1', FALSE);
+                $this->db_masis_pt->set('tersedia', 'tersedia+1', FALSE);
+                $this->db_masis_pt->where('id_qty', $data['qty_id']);
+                $this->db_masis_pt->update('tb_qty_assets');
             } else {
-                $this->db->set('qty', 'qty+1', FALSE);
-                $this->db->where('id_qty', $data['qty_id']);
-                $this->db->update('tb_qty_assets');
+                $this->db_masis_pt->set('qty', 'qty+1', FALSE);
+                $this->db_masis_pt->where('id_qty', $data['qty_id']);
+                $this->db_masis_pt->update('tb_qty_assets');
             }
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New assets added!</div>');
             redirect('DataAssets');
@@ -197,16 +201,16 @@ class DataAssets extends CI_Controller
 
     public function editAssets($id)
     {
-        $data['pt'] = $this->db->get('tb_pt')->result_array();
+        $data['pt'] = $this->db_masis_pt->get('tb_pt')->result_array();
 
         $data['title'] = 'Edit Assets';
-        $data['category'] = $this->db->get('tb_qty_assets')->result_array();
-        $this->db->select('*');
-        $this->db->from('tb_assets');
-        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
-        $this->db->where('id_assets', $id);
-        $this->db->order_by('id_assets', 'DESC');
-        $data['assets']  = $this->db->get()->result_array();
+        $data['category'] = $this->db_masis_pt->get('tb_qty_assets')->result_array();
+        $this->db_masis_pt->select('*');
+        $this->db_masis_pt->from('tb_assets');
+        $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+        $this->db_masis_pt->where('id_assets', $id);
+        $this->db_masis_pt->order_by('id_assets', 'DESC');
+        $data['assets']  = $this->db_masis_pt->get()->result_array();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
@@ -262,22 +266,22 @@ class DataAssets extends CI_Controller
             'ket_fisik' => $this->input->post('ket_fisik'),
         ];
 
-        $cek = $this->db->get_where('tb_assets', ['id_assets' => $data['id_assets']])->row_array();
+        $cek = $this->db_masis_pt->get_where('tb_assets', ['id_assets' => $data['id_assets']])->row_array();
         if ($cek['kondisi'] == 1 and $data['kondisi'] == 0) {
 
-            $this->db->set('tersedia', 'tersedia-1', FALSE);
-            $this->db->where('id_qty', $data['qty_id']);
-            $this->db->update('tb_qty_assets');
+            $this->db_masis_pt->set('tersedia', 'tersedia-1', FALSE);
+            $this->db_masis_pt->where('id_qty', $data['qty_id']);
+            $this->db_masis_pt->update('tb_qty_assets');
         } elseif ($cek['kondisi'] == 0 and $data['kondisi'] == 1) {
 
-            $this->db->set('tersedia', 'tersedia+1', FALSE);
-            $this->db->where('id_qty', $data['qty_id']);
-            $this->db->update('tb_qty_assets');
+            $this->db_masis_pt->set('tersedia', 'tersedia+1', FALSE);
+            $this->db_masis_pt->where('id_qty', $data['qty_id']);
+            $this->db_masis_pt->update('tb_qty_assets');
         } else {
         }
 
-        $this->db->where('id_assets', $data['id_assets']);
-        $this->db->update('tb_assets', $data);
+        $this->db_masis_pt->where('id_assets', $data['id_assets']);
+        $this->db_masis_pt->update('tb_assets', $data);
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Assets has been updated successfully!</div>');
         redirect('DataAssets');
@@ -285,12 +289,12 @@ class DataAssets extends CI_Controller
 
     public function deleteAssets($id, $id_qty)
     {
-        $this->db->where('id_assets', $id);
-        $this->db->delete('tb_assets');
-        $this->db->set('qty', 'qty-1', FALSE);
-        $this->db->set('tersedia', 'tersedia-1', FALSE);
-        $this->db->where('id_qty', $id_qty);
-        $this->db->update('tb_qty_assets');
+        $this->db_masis_pt->where('id_assets', $id);
+        $this->db_masis_pt->delete('tb_assets');
+        $this->db_masis_pt->set('qty', 'qty-1', FALSE);
+        $this->db_masis_pt->set('tersedia', 'tersedia-1', FALSE);
+        $this->db_masis_pt->where('id_qty', $id_qty);
+        $this->db_masis_pt->update('tb_qty_assets');
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Assets has been deleted successfully!</div>');
         redirect('DataAssets');
     }
@@ -298,7 +302,7 @@ class DataAssets extends CI_Controller
     public function qtyAssets()
     {
         $data['title'] = 'Qty Assets';
-        $data['qty_assets'] = $this->db->get('tb_qty_assets')->result_array();
+        $data['qty_assets'] = $this->db_masis_pt->get('tb_qty_assets')->result_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('templates/sidebar', $data);
@@ -319,7 +323,7 @@ class DataAssets extends CI_Controller
                 'qty' => 0,
                 'tersedia' => 0
             ];
-            $this->db->insert('tb_qty_assets', $data);
+            $this->db_masis_pt->insert('tb_qty_assets', $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New category added!</div>');
             redirect('DataAssets/qtyAssets');
         }
@@ -328,7 +332,7 @@ class DataAssets extends CI_Controller
     public function editCategory($id)
     {
         $data['title'] = 'Edit Category';
-        $data['category'] = $this->db->get_where('tb_qty_assets', ['id_qty' => $id])->result_array();
+        $data['category'] = $this->db_masis_pt->get_where('tb_qty_assets', ['id_qty' => $id])->result_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('templates/sidebar', $data);
@@ -338,9 +342,9 @@ class DataAssets extends CI_Controller
 
     public function updateCategory()
     {
-        $this->db->set('category', $this->input->post('category'));
-        $this->db->where('id_qty', $this->input->post('id'));
-        $this->db->update('tb_qty_assets');
+        $this->db_masis_pt->set('category', $this->input->post('category'));
+        $this->db_masis_pt->where('id_qty', $this->input->post('id'));
+        $this->db_masis_pt->update('tb_qty_assets');
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">category has been updated successfully!</div>');
         $this->qtyAssets();
     }
@@ -359,46 +363,46 @@ class DataAssets extends CI_Controller
         ];
 
         // ket
-        $this->db->select('alias, category');
-        $this->db->from('tb_assets');
-        $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
-        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+        $this->db_masis_pt->select('alias, category');
+        $this->db_masis_pt->from('tb_assets');
+        $this->db_masis_pt->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+        $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
         if ($data['data_post']['pilih_pt'] != 'Y') {
-            $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+            $this->db_masis_pt->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
         } else {
         }
         if ($data['data_post']['pilih_category'] != 'Y') {
-            $this->db->where('qty_id', $data['data_post']['pilih_category']);
+            $this->db_masis_pt->where('qty_id', $data['data_post']['pilih_category']);
         } else {
         }
-        $data['data_assets_ket'] = $this->db->get()->row_array();
+        $data['data_assets_ket'] = $this->db_masis_pt->get()->row_array();
 
         // table
-        $this->db->select('*');
-        $this->db->from('tb_assets');
-        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
-        $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+        $this->db_masis_pt->select('*');
+        $this->db_masis_pt->from('tb_assets');
+        $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+        $this->db_masis_pt->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
 
         if ($data['data_post']['pilih_pt'] != 'Y') {
-            $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+            $this->db_masis_pt->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
         }
         if ($data['data_post']['pilih_category'] != 'Y') {
-            $this->db->where('qty_id', $data['data_post']['pilih_category']);
+            $this->db_masis_pt->where('qty_id', $data['data_post']['pilih_category']);
         }
         if ($data['data_post']['pilih_kondisi'] != 'Y') {
-            $this->db->where('kondisi', $data['data_post']['pilih_kondisi']);
+            $this->db_masis_pt->where('kondisi', $data['data_post']['pilih_kondisi']);
         }
         if ($data['data_post']['divisi'] != 'Y') {
-            $this->db->where('id_divisi', $data['data_post']['divisi']);
+            $this->db_masis_pt->where('id_divisi', $data['data_post']['divisi']);
         }
         if ($data['data_post']['cb_idle'] == 'on') {
-            $this->db->where('idle', $data['data_post']['cb_idle']);
+            $this->db_masis_pt->where('idle', $data['data_post']['cb_idle']);
         }
         if ($data['data_post']['status_unit'] != 'Y') {
-            $this->db->where('status_unit', $data['data_post']['status_unit']);
+            $this->db_masis_pt->where('status_unit', $data['data_post']['status_unit']);
         }
-        $this->db->order_by('id_assets', 'DESC');
-        $data['data_assets'] = $this->db->get()->result_array();
+        $this->db_masis_pt->order_by('id_assets', 'DESC');
+        $data['data_assets'] = $this->db_masis_pt->get()->result_array();
 
         //test
         $html = $this->load->view('admin/report_assets', $data, true);
@@ -498,52 +502,52 @@ class DataAssets extends CI_Controller
     //     ];
 
     //     // ket
-    //     $this->db->select('alias, category');
-    //     $this->db->from('tb_assets');
-    //     $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
-    //     $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+    //     $this->db_masis_pt->select('alias, category');
+    //     $this->db_masis_pt->from('tb_assets');
+    //     $this->db_masis_pt->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+    //     $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
     //     if ($data['data_post']['pilih_pt'] != 'Y') {
-    //         $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+    //         $this->db_masis_pt->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
     //     } else {
     //     }
     //     if ($data['data_post']['pilih_category'] != 'Y') {
-    //         $this->db->where('qty_id', $data['data_post']['pilih_category']);
+    //         $this->db_masis_pt->where('qty_id', $data['data_post']['pilih_category']);
     //     } else {
     //     }
-    //     $data['data_assets_ket'] = $this->db->get()->row_array();
+    //     $data['data_assets_ket'] = $this->db_masis_pt->get()->row_array();
 
     //     // table
-    //     $this->db->select('*');
-    //     $this->db->from('tb_assets');
-    //     $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
-    //     $this->db->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+    //     $this->db_masis_pt->select('*');
+    //     $this->db_masis_pt->from('tb_assets');
+    //     $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+    //     $this->db_masis_pt->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
 
     //     if ($data['data_post']['pilih_pt'] != 'Y') {
-    //         $this->db->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+    //         $this->db_masis_pt->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
     //     } else {
     //     }
     //     if ($data['data_post']['pilih_category'] != 'Y') {
-    //         $this->db->where('qty_id', $data['data_post']['pilih_category']);
+    //         $this->db_masis_pt->where('qty_id', $data['data_post']['pilih_category']);
     //     } else {
     //     }
     //     if ($data['data_post']['pilih_kondisi'] != 'Y') {
-    //         $this->db->where('kondisi', $data['data_post']['pilih_kondisi']);
+    //         $this->db_masis_pt->where('kondisi', $data['data_post']['pilih_kondisi']);
     //     } else {
     //     }
     //     if ($data['data_post']['cari_lokasi'] != NULL) {
-    //         $this->db->like('lokasi', $data['data_post']['cari_lokasi'], 'both');
+    //         $this->db_masis_pt->like('lokasi', $data['data_post']['cari_lokasi'], 'both');
     //     } else {
     //     }
     //     if ($data['data_post']['cb_idle'] != NULL) {
-    //         $this->db->where('idle', $data['data_post']['cb_idle']);
+    //         $this->db_masis_pt->where('idle', $data['data_post']['cb_idle']);
     //     } else {
     //     }
     //     if ($data['data_post']['status_unit'] != 'Y') {
-    //         $this->db->where('status_unit', $data['data_post']['status_unit']);
+    //         $this->db_masis_pt->where('status_unit', $data['data_post']['status_unit']);
     //     } else {
     //     }
-    //     $this->db->order_by('id_assets', 'DESC');
-    //     $data['assets'] = $this->db->get()->result_array();
+    //     $this->db_masis_pt->order_by('id_assets', 'DESC');
+    //     $data['assets'] = $this->db_masis_pt->get()->result_array();
 
     //     $this->load->view('templates/header', $data);
     //     $this->load->view('templates/topbar', $data);

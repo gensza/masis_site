@@ -8,6 +8,10 @@ class DataPeminjaman extends CI_Controller
     {
         // menjalankan method ketika class Auth dijalankan
         parent::__construct();
+        $db_pt = check_db_pt();
+
+        $this->db_masis_pt = $this->load->database('db_masis_' . $db_pt, TRUE);
+
         $this->load->library('form_validation');
 
         //for SSO
@@ -27,15 +31,15 @@ class DataPeminjaman extends CI_Controller
         // $db2 = $this->load->database('db2', TRUE);
 
         $data['title'] = 'Pinjam Assets';
-        $this->db->select('*');
-        $this->db->from('tb_lend_assets');
-        $this->db->join('tb_assets', 'tb_assets.id_assets = tb_lend_assets.assets_id', 'left');
-        // $this->db->join('tb_users', 'tb_users.id_users = tb_lend_assets.users_id', 'left');
-        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_lend_assets.qty_id', 'left');
-        $this->db->order_by('id_lend', 'DESC');
-        $data['assets'] = $this->db->get()->result_array();
+        $this->db_masis_pt->select('*');
+        $this->db_masis_pt->from('tb_lend_assets');
+        $this->db_masis_pt->join('tb_assets', 'tb_assets.id_assets = tb_lend_assets.assets_id', 'left');
+        // $this->db_masis_pt->join('tb_users', 'tb_users.id_users = tb_lend_assets.users_id', 'left');
+        $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_lend_assets.qty_id', 'left');
+        $this->db_masis_pt->order_by('id_lend', 'DESC');
+        $data['assets'] = $this->db_masis_pt->get()->result_array();
         // $data['users_ho'] = $db2->get('user_ho')->result_array();
-        $data['category'] = $this->db->get('tb_qty_assets')->result_array();
+        $data['category'] = $this->db_masis_pt->get('tb_qty_assets')->result_array();
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('templates/sidebar', $data);
@@ -65,7 +69,7 @@ class DataPeminjaman extends CI_Controller
                 'apprvd_mis_dept' => 0,
                 'lend_status' => 0
             ];
-            $this->db->insert('tb_lend_assets', $data);
+            $this->db_masis_pt->insert('tb_lend_assets', $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your request has been successfully!</div>');
             redirect('DataPeminjaman');
         }
@@ -73,20 +77,20 @@ class DataPeminjaman extends CI_Controller
 
     public function cancelRequest($id)
     {
-        $this->db->set('date_return', 0);
-        $this->db->set('lend_status', 3, FALSE);
-        $this->db->where('id_lend', $id);
-        $this->db->update('tb_lend_assets');
+        $this->db_masis_pt->set('date_return', 0);
+        $this->db_masis_pt->set('lend_status', 3, FALSE);
+        $this->db_masis_pt->where('id_lend', $id);
+        $this->db_masis_pt->update('tb_lend_assets');
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your request has been successfully canceled!</div>');
         redirect('DataPeminjaman');
     }
 
     public function approveReturn($id)
     {
-        $this->db->set('date_return', date("Y-m-d h:i:s"));
-        $this->db->set('lend_status', 2, FALSE);
-        $this->db->where('id_lend', $id);
-        $this->db->update('tb_lend_assets');
+        $this->db_masis_pt->set('date_return', date("Y-m-d h:i:s"));
+        $this->db_masis_pt->set('lend_status', 2, FALSE);
+        $this->db_masis_pt->where('id_lend', $id);
+        $this->db_masis_pt->update('tb_lend_assets');
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Assets has been successfully! returned</div>');
         redirect('DataPeminjaman');
     }
@@ -95,12 +99,12 @@ class DataPeminjaman extends CI_Controller
     {
         $dompdf = new Dompdf();
 
-        $this->db->select('*');
-        $this->db->from('tb_lend_assets');
-        $this->db->join('tb_assets', 'tb_assets.id_assets = tb_lend_assets.assets_id', 'left');
-        $this->db->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_lend_assets.qty_id', 'left');
-        $this->db->order_by('id_lend', 'DESC');
-        $data['assets'] = $this->db->get()->result_array();
+        $this->db_masis_pt->select('*');
+        $this->db_masis_pt->from('tb_lend_assets');
+        $this->db_masis_pt->join('tb_assets', 'tb_assets.id_assets = tb_lend_assets.assets_id', 'left');
+        $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_lend_assets.qty_id', 'left');
+        $this->db_masis_pt->order_by('id_lend', 'DESC');
+        $data['assets'] = $this->db_masis_pt->get()->result_array();
 
         //test
         $html = $this->load->view('admin/report_peminjaman', $data, true);

@@ -2,74 +2,83 @@
 <html lang="en">
 
 <head>
+    <meta charset="utf-8" />
+    <title>Error Page | 500 | Internal Server Error | UBold - Responsive Admin Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="../assets/images/favicon.ico">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <!-- App css -->
+    <link href="../assets/css/bootstrap-material.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="../assets/css/app-material.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
-    <title>Access Blocked</title>
+    <link href="../assets/css/bootstrap-material-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+    <link href="../assets/css/app-material-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 
-    <!-- Custom fonts for this template-->
-    <link href="<?= base_url('assets/') ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="<?= base_url('assets/') ?>css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- icons -->
+    <link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
 </head>
 
-<body id="page-top">
+<body class="loading authentication-bg authentication-bg-pattern">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div class="account-pages mt-5 mb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-5">
+                    <div class="card bg-pattern">
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+                        <div class="card-body p-4">
 
-            <!-- Main Content -->
-            <div id="content">
+                            <div class="auth-logo">
+                                <a href="index.html" class="logo logo-dark text-center">
+                                    <span class="logo-lg">
+                                        <img src="../assets/images/logo-dark.png" alt="" height="22">
+                                    </span>
+                                </a>
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid mt-10">
+                                <a href="index.html" class="logo logo-light text-center">
+                                    <span class="logo-lg">
+                                        <img src="../assets/images/logo-light.png" alt="" height="22">
+                                    </span>
+                                </a>
+                            </div>
 
-                    <!-- 404 Error Text -->
-                    <div class="text-center">
-                        <div class="error mx-auto" data-text="404">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-                        <a href="<?= base_url('user'); ?>">&larr; Back to Dashboard</a>
+                            <div class="text-center mt-4">
+                                <h1 class="text-error">500</h1>
+                                <h3 class="mt-3 mb-2">Internal Server Error</h3>
+                                <p class="text-muted mb-3">DATABASE Not Found! <br><a href="" class="text-dark"><b>Develop By @genszanando <- Follow My Instgaram</b></a></p>
+
+                                <a href="<?= base_url('Auth') ?>" class="btn btn-success waves-effect waves-light">Back to Login</a>
+                            </div>
+
+                        </div> <!-- end card-body -->
                     </div>
+                    <!-- end card -->
 
-                </div>
-                <!-- /.container-fluid -->
-
+                </div> <!-- end col -->
             </div>
-            <!-- End of Main Content -->
-
+            <!-- end row -->
         </div>
-        <!-- End of Content Wrapper -->
-
+        <!-- end container -->
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- end page -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="<?= base_url('assets/') ?>vendor/jquery/jquery.min.js"></script>
-    <script src="<?= base_url('assets/') ?>vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <footer class="footer footer-alt">
+        2015 - <script>
+            document.write(new Date().getFullYear())
+        </script> &copy; UBold theme by <a href="" class="text-white-50">Coderthemes</a>
+    </footer>
 
-    <!-- Core plugin JavaScript-->
-    <script src="<?= base_url('assets/') ?>vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Vendor js -->
+    <script src="../assets/js/vendor.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="<?= base_url('assets/') ?>js/sb-admin-2.min.js"></script>
+    <!-- App js -->
+    <script src="../assets/js/app.min.js"></script>
 
 </body>
 

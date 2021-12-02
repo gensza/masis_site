@@ -20,8 +20,7 @@
                         <div class="card-body">
                             <div class="row justify-content-between mb-3">
                                 <h4 class="header-title">Data Table</h4>
-                                <button class="btn btn-sm btn-success" data-toggle="modal"
-                                    data-target="#modalCategory">Add category</button>
+                                <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalCategory">Add category</button>
                             </div>
                             <table id="basic-datatable" class="table dt-responsive nowrap w-100">
                                 <thead>
@@ -38,31 +37,31 @@
                                 <tbody>
                                     <?php $no = 1  ?>
                                     <?php foreach ($qty_assets as $qty) : ?>
-                                    <tr>
-                                        <td><?= $no++  ?></td>
-                                        <td><?= $qty['category'] ?></td>
-                                        <td><?= $qty['qty'] ?></td>
-                                        <td><?= $qty['tersedia'] ?></td>
-                                        <td>
-                                            <?php
+                                        <tr>
+                                            <td><?= $no++  ?></td>
+                                            <td><?= $qty['category'] ?></td>
+                                            <td><?= $qty['qty'] ?></td>
+                                            <td><?= $qty['tersedia'] ?></td>
+                                            <td>
+                                                <?php
                                                 $result = "SELECT COUNT(idle) as idle FROM tb_assets WHERE qty_id = $qty[id_qty] AND idle = 'on'";
-                                                $count = $this->db->query($result)->row_array();
+                                                $count = $this->db_masis_pt->query($result)->row_array();
                                                 // var_dump($count);
                                                 echo $count['idle'];
                                                 ?>
-                                        </td>
-                                        <td>
-                                            <?php
+                                            </td>
+                                            <td>
+                                                <?php
                                                 $result = "SELECT COUNT(status_unit) as pinjam FROM tb_assets WHERE qty_id = $qty[id_qty] AND status_unit = 0";
-                                                $count = $this->db->query($result)->row_array();
+                                                $count = $this->db_masis_pt->query($result)->row_array();
                                                 // var_dump($count);
                                                 echo $count['pinjam'];
                                                 ?>
-                                        </td>
-                                        <td>
-                                            <?= anchor('DataAssets/editCategory/' . $qty['id_qty'], '<button class="btn btn-sm btn-warning"><i class="mdi mdi-lead-pencil"></i></button>') ?>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td>
+                                                <?= anchor('DataAssets/editCategory/' . $qty['id_qty'], '<button class="btn btn-sm btn-warning"><i class="mdi mdi-lead-pencil"></i></button>') ?>
+                                            </td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -85,8 +84,7 @@
                 <form action="<?= base_url('DataAssets/addCategory') ?>" method="POST">
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="category" name="category"
-                                placeholder="Category">
+                            <input type="text" class="form-control" id="category" name="category" placeholder="Category">
                         </div>
                     </div>
                     <div class="modal-footer">
