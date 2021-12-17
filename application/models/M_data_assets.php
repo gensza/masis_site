@@ -153,6 +153,29 @@ class M_data_assets extends CI_Model
         $this->db_masis_pt->from('tb_divisi');
         return $this->db_masis_pt->get()->result_array();
     }
+
+    public function dept()
+    {
+        $this->db_center->select('kode, nama');
+        $this->db_center->from('dept');
+        return $this->db_center->get()->result_array();
+    }
+
+    public function select2_get_user()
+    {
+        $nama = $this->input->get('nama');
+
+        $query = "SELECT id,nama FROM master_karyawan WHERE nama LIKE '%$nama%' ORDER BY id DESC";
+
+        return $this->db_masis_hris->query($query)->result_array();
+    }
+
+    public function get_dev_jab($id_user)
+    {
+        $query = "SELECT id,nama,depar,jabatan FROM master_karyawan WHERE id = '$id_user'";
+
+        return $this->db_masis_hris->query($query)->row_array();
+    }
 }
 
 /* End of file M_data_assets.php */

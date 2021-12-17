@@ -18,6 +18,10 @@
     <!-- Plugins css -->
     <link href="<?= base_url() ?>/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= base_url() ?>/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+    <!-- select2 -->
+    <link href="<?= base_url() ?>/assets/css/select2.min.css" rel="stylesheet" type="text/css" />
+
     <!-- App css -->
     <link href="<?= base_url() ?>/assets/css/bootstrap-material.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="<?= base_url() ?>/assets/css/app-material.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />

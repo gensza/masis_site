@@ -15,6 +15,8 @@ function check_db_pt()
             $db_pt = 'peak';
       } elseif ($session_db_pt == 'kpp') {
             $db_pt = 'kpp';
+      } elseif ($session_db_pt == 'dev') {
+            $db_pt = 'dev';
       }
       return $db_pt;
 }

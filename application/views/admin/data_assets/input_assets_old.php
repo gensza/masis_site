@@ -31,15 +31,24 @@
                                         <label for="">Kode Asset*</label>
                                         <input type="text" class="form-control" id="kode_asset" name="kode_asset" placeholder="Kode Asset" required>
                                     </div>
-                                    <div class="form-group col-3">
+                                    <div class="form-group col-2">
                                         <label for="">Type</label>
                                         <input type="text" class="form-control" id="type" name="type" placeholder="Type">
                                     </div>
-                                    <div class="form-group mb-1 col-3">
+                                    <div class="form-group mb-1 col-2">
                                         <label for="">Serial Number</label>
                                         <input type="text" class="form-control" id="serial_number" name="serial_number" placeholder="Serial Number">
                                     </div>
-
+                                    <div class="form-group mb-1 col-2">
+                                        <label for="">Satuan</label>
+                                        <select name="satuan" id="satuan" class="form-control">
+                                            <option value="" selected disabled>- Select Satuan - </option>
+                                            <option value="unit">Unit</option>
+                                            <option value="pcs">Pcs</option>
+                                            <option value="set">Set</option>
+                                            <option value="tower">Tower</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group mb-1 col-3">
@@ -51,50 +60,23 @@
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
-                                    <div class="form-group col-3">
-                                        <label for="">User</label>
-                                        <input type="hidden" name="user" id="user">
-                                        <select class="form-control" id="select2_user" name="select2_user">
-                                            <option value="" selected>- Select User - </option>
-                                        </select>
-                                        <!-- <input type="text" class="form-control" id="user" name="user" placeholder="User"> -->
-                                    </div>
                                     <div class="form-group mb-1 col-3">
-                                        <label for="">Divisi/Department*</label>
+                                        <label for="">Divisi*</label>
                                         <select name="divisi" id="divisi" class="form-control" required>
-                                            <option value="" selected disabled>- Select Dept - </option>
-                                            <?php foreach ($dept as $d) : ?>
-                                                <option value="<?= $d['nama'] ?>"><?= $d['kode'] . ' - ' . $d['nama'] ?></option>
-                                            <?php endforeach; ?>
+                                            <option value="" selected disabled>- Select Divisi - </option>
                                         </select>
                                     </div>
-                                    <div class="form-group mb-1 col-3">
-                                        <!-- blm di tambahkan -->
-                                        <label for="">Jabatan*</label>
-                                        <select name="jabatan" id="jabatan" class="form-control">
-                                            <option value="" selected disabled>- Select Jabatan - </option>
-                                        </select>
+                                    <div class="form-group col-2">
+                                        <label for="">User</label>
+                                        <input type="text" class="form-control" id="user" name="user" placeholder="User">
                                     </div>
-
-                                </div>
-                                <div class="row">
                                     <div class="form-group mb-1 col-2">
-                                        <label for="">Satuan</label>
-                                        <select name="satuan" id="satuan" class="form-control">
-                                            <option value="" selected disabled>- Select Satuan - </option>
-                                            <option value="unit">Unit</option>
-                                            <option value="pcs">Pcs</option>
-                                            <option value="set">Set</option>
-                                            <option value="tower">Tower</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-3">
-                                        <label for="">No PO</label>
-                                        <input type="text" class="form-control" id="no_po" name="no_po" placeholder="No PO">
-                                    </div>
-                                    <div class="form-group mb-1 col-3">
                                         <label for="">Lokasi</label>
                                         <input type="text" class="form-control" id="lokasi" name="lokasi" placeholder="Lokasi">
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="">No PO</label>
+                                        <input type="text" class="form-control" id="no_po" name="no_po" placeholder="No PO">
                                     </div>
                                 </div>
 
@@ -236,7 +218,6 @@
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary">Add</button>
                                 </div>
-
                             </form>
                         </div> <!-- end card body-->
                     </div> <!-- end card -->
@@ -248,69 +229,6 @@
         <script>
             $(document).ready(function() {
 
-                // In your Javascript (external .js resource or <script> tag)
-                $("#select2_user").select2({
-                    // placeholder: "Buscar y Selecionar",
-                    ajax: {
-                        url: "<?php echo site_url('DataAssets/select2_get_user') ?>",
-                        dataType: 'json',
-                        delay: 250,
-                        data: function(params) {
-                            return {
-                                nama: params.term, // search term
-                            };
-                        },
-                        processResults: function(data) {
-                            var results = [];
-                            $.each(data, function(index, item) {
-                                results.push({
-                                    id: item.id,
-                                    text: item.nama
-                                });
-                            });
-                            return {
-                                results: results
-                            };
-                        }
-                    }
-                }).on('select2:select', function(evt) {
-                    // var selected = evt.params.data;
-                    var data = $("#select2_user option:selected").val();
-                    var nama = $("#select2_user option:selected").text();
-
-                    $('#user').val(nama);
-                    // $('#id_user').val(data);
-                    // console.log(data);
-                    get_dev_jab(data);
-
-                });
-
-                function get_dev_jab(data) {
-                    $.ajax({
-                        url: "<?php echo site_url('DataAssets/get_dev_jab'); ?>",
-                        method: "POST",
-                        data: {
-                            id_user: data
-                        },
-                        async: true,
-                        dataType: 'json',
-                        success: function(data) {
-
-                            console.log(data);
-                            var html = '';
-                            var html_1 = '';
-                            var i;
-
-                            html = '<option value=' + data.depar + '>' + data.depar + '</option>'; // divisi/depar
-                            html_1 = '<option value=' + data.jabatan + '>' + data.jabatan + '</option>';
-
-                            $('#divisi').html(html); // divisi/depar
-                            $('#jabatan').html(html_1);
-
-                        }
-                    });
-                }
-
                 //validasi maintenance
                 $("#frek_maintenan").keyup(function() {
                     $('.maintenance').find('#tgl_mulai_maintenan').attr('required', '');
@@ -318,9 +236,9 @@
 
                 $('#id_pt').change(function() {
                     var id_pt = $(this).val();
-                    // sebenernya ini dulunya devisi tapi setelah dilihat isiny adalah jabatan
+
                     $.ajax({
-                        url: "<?php echo site_url('DataAssets/select_get_divisi'); ?>",
+                        url: "<?php echo site_url('dataAssets/select_get_divisi'); ?>",
                         method: "POST",
                         data: {
                             id_pt: id_pt
@@ -331,13 +249,10 @@
 
                             var html = '';
                             var i;
-
-                            html += '<option value="">-</option>';
-
                             for (i = 0; i < data.length; i++) {
-                                html += '<option value=' + data[i].nama_divisi + '>' + data[i].nama_divisi + '</option>';
+                                html += '<option value=' + data[i].id_divisi + '>' + data[i].nama_divisi + '</option>';
                             }
-                            $('#jabatan').html(html);
+                            $('#divisi').html(html);
 
                         }
                     });

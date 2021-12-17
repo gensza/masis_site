@@ -9,7 +9,13 @@ class DataAssets extends CI_Controller
         parent::__construct();
         $db_pt = check_db_pt();
 
+        $this->db_center = $this->load->database('db_center', true);
+
         $this->db_masis_pt = $this->load->database('db_masis_' . $db_pt, TRUE);
+
+        // db HRIS
+        $this->db_masis_hris = $this->load->database('msalgrou_personalia_' . $db_pt, TRUE);
+        // $this->db_masis_hris = $this->load->database('msalgrou_personalia_peak', TRUE);
 
         $this->load->library('form_validation');
 
@@ -71,6 +77,8 @@ class DataAssets extends CI_Controller
         $sess_user = $this->session->userdata('id_pt');
         $data['pt'] = $this->db_masis_pt->get_where('tb_pt', ['id_pt' => $sess_user])->result_array();
         $data['category'] = $this->db_masis_pt->get('tb_qty_assets')->result_array();
+        $data['dept'] = $this->M_data_assets->dept();
+
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/topbar', $data);
@@ -150,7 +158,8 @@ class DataAssets extends CI_Controller
                 'serial_number' => $this->input->post('serial_number'),
                 'satuan' => $this->input->post('satuan'),
                 'id_pt' => $this->input->post('id_pt'),
-                'id_divisi' => $this->input->post('divisi'),
+                'divisi' => $this->input->post('divisi'),
+                'jabatan' => $this->input->post('jabatan'),
                 'user' => $this->input->post('user'),
                 'lokasi' => $this->input->post('lokasi'),
                 'no_po' => $this->input->post('no_po'),
@@ -486,6 +495,20 @@ class DataAssets extends CI_Controller
         );
         //output dalam format JSON
         echo json_encode($output);
+    }
+
+    public function select2_get_user()
+    {
+        $data = $this->M_data_assets->select2_get_user();
+        echo json_encode($data);
+    }
+
+    public function get_dev_jab()
+    {
+        $id_user = $this->input->post('id_user');
+
+        $data = $this->M_data_assets->get_dev_jab($id_user);
+        echo json_encode($data);
     }
 
     // public function filterDataAssets()

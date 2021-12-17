@@ -234,7 +234,7 @@
                                     <div class="modal-footer">
                                         <a class="btn btn-secondary" href="<?= base_url('DataAssets') ?>"><i class="mdi mdi-arrow-left"></i> Back to Data
                                             Assets</a>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <!-- <button type="submit" class="btn btn-primary">Save</button> -->
                                     </div>
                                 <?php endforeach; ?>
                             </form>

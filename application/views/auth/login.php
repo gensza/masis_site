@@ -24,6 +24,7 @@
                                     <div class="form-group">
                                         <select class="form-control" id="kode_pt" name="kode_pt" required>
                                             <option value="" selected disabled>--pilih PT--</option>
+                                            <!-- <option value="99">PT Develop</option> -->
                                             <?php
                                             foreach ($pt as $d) : {
                                             ?>

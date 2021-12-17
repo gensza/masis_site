@@ -15,6 +15,7 @@ class Auth extends CI_Controller
 		$this->db_masis_peak = $this->load->database('db_masis_peak', true);
 		$this->db_masis_psam = $this->load->database('db_masis_psam', true);
 		$this->db_masis_kpp = $this->load->database('db_masis_kpp', true);
+		$this->db_masis_dev = $this->load->database('db_masis_dev', true);
 
 		// if (!$this->session->userdata('userlogin')) {
 		// 	redirect('http://mips.msalgroup.com/msal-login/');
@@ -54,25 +55,28 @@ class Auth extends CI_Controller
 
 		$kode_pt_login = $this->input->post('kode_pt');
 
-		// cari kode pt di tb central
-		$data['get_tb_pt_central'] = $this->db_center->get_where('tb_pt', array('kode_pt' => $kode_pt_login))->row_array();
+		if ($kode_pt_login == '99') {
+			$pt_login = 'db_masis_dev'; // ini untuk maintenance
+		} else {
+			// cari kode pt di tb central
+			$data['get_tb_pt_central'] = $this->db_center->get_where('tb_pt', array('kode_pt' => $kode_pt_login))->row_array();
 
-		$pt_login = FALSE;
-		if ($data['get_tb_pt_central']['alias'] == 'MSAL') {
-			// $pt_login = 'db_masis_msal';
-			redirect('Auth/blocked');
-		} else if ($data['get_tb_pt_central']['alias'] == 'MAPA') {
-			// $pt_login = 'db_masis_mapa';
-			redirect('Auth/blocked');
-		} else if ($data['get_tb_pt_central']['alias'] == 'PEAK') {
-			$pt_login = 'db_masis_peak';
-		} else if ($data['get_tb_pt_central']['alias'] == 'PSAM') {
-			// $pt_login = 'db_masis_psam';
-			redirect('Auth/blocked');
-		} else if ($data['get_tb_pt_central']['alias'] == 'KPP') {
-			// $pt_login = 'db_masis_kpp';
-			redirect('Auth/blocked');
+			$pt_login = FALSE;
+			if ($data['get_tb_pt_central']['alias'] == 'MSAL') {
+				// $pt_login = 'db_masis_msal';
+				redirect('Auth/blocked');
+			} else if ($data['get_tb_pt_central']['alias'] == 'MAPA') {
+				$pt_login = 'db_masis_mapa';
+			} else if ($data['get_tb_pt_central']['alias'] == 'PEAK') {
+				$pt_login = 'db_masis_peak';
+			} else if ($data['get_tb_pt_central']['alias'] == 'PSAM') {
+				// $pt_login = 'db_masis_psam';
+				redirect('Auth/blocked');
+			} else if ($data['get_tb_pt_central']['alias'] == 'KPP') {
+				$pt_login = 'db_masis_kpp';
+			}
 		}
+
 
 		// cek username dari inputan
 		$user = $this->$pt_login->get_where('user', ['username' => $username, 'is_active' => 1])->row_array();
@@ -82,12 +86,21 @@ class Auth extends CI_Controller
 			if ($user['is_active'] == 1) {
 				// cek password, jika benar akan masuk dan set session lalu di redirect
 				if (password_verify($password, $user['password'])) {
-					$data = [
-						'username' => $user['username'],
-						'role_id' => $user['role_id'],
-						'id_pt' => $user['id_pt'],
-						'app_pt' => $data['get_tb_pt_central']['alias'], //MSAL, MAPA, PSAM, PEAK, KPP
-					];
+					if ($kode_pt_login == '99') {
+						$data = [
+							'username' => $user['username'],
+							'role_id' => $user['role_id'],
+							'id_pt' => $user['id_pt'],
+							'app_pt' => 'dev', //MSAL, MAPA, PSAM, PEAK, KPP
+						];
+					} else {
+						$data = [
+							'username' => $user['username'],
+							'role_id' => $user['role_id'],
+							'id_pt' => $user['id_pt'],
+							'app_pt' => $data['get_tb_pt_central']['alias'], //MSAL, MAPA, PSAM, PEAK, KPP
+						];
+					}
 					$this->session->set_userdata($data);
 					// role_id 1 = admin
 					if ($user['role_id'] == 1) {
