@@ -30,17 +30,53 @@
                                             </select>
                                         </div>
                                         <div class="form-group col-3">
-                                            <label for="">Kode Asset</label>
+                                            <label for="">Kode Asset*</label>
                                             <input type="text" class="form-control" id="kode_asset" name="kode_asset" value="<?= $a['kode_assets'] ?>" placeholder="Kode Asset" required>
                                         </div>
-                                        <div class="form-group col-2">
+                                        <div class="form-group col-3">
                                             <label for="">Type</label>
                                             <input type="text" class="form-control" id="type" name="type" value="<?= $a['type'] ?>" placeholder="Type">
                                         </div>
-                                        <div class="form-group mb-1 col-2">
+                                        <div class="form-group mb-1 col-3">
                                             <label for="">Serial Number</label>
                                             <input type="text" class="form-control" id="serial_number" name="serial_number" value="<?= $a['serial_number'] ?>" placeholder="Serial Number">
                                         </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group mb-1 col-3">
+                                            <label for="">PT*</label>
+                                            <select name="id_pt" id="id_pt" class="form-control" required>
+                                                <option value="<?= $a['id_pt'] ?>" selected><?= $a['id_pt'] ?>
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label for="">User</label>
+                                            <input type="hidden" name="user" id="user" value="<?= $a['user'] ?>">
+                                            <select class="form-control" id="select2_user" name="select2_user">
+                                                <option value="<?= $a['user'] ?>" selected><?= $a['user'] ?>
+                                            </select>
+                                            <!-- <input type="text" class="form-control" id="user" name="user" value="<?= $a['user'] ?>" placeholder="User"> -->
+                                        </div>
+                                        <div class="form-group mb-1 col-3">
+                                            <label for="">Divisi/department*</label>
+                                            <select name="divisi" id="divisi" class="form-control" required>
+                                                <option value="<?= $a['divisi'] ?>" selected><?= $a['divisi'] ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-1 col-3">
+                                            <!-- blm di tambahkan -->
+                                            <label for="">Jabatan</label>
+                                            <select name="jabatan" id="jabatan" class="form-control">
+                                                <option value="<?= $a['jabatan'] ?>" selected><?= $a['jabatan'] ?>
+
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
                                         <div class="form-group mb-1 col-2">
                                             <label for="">Satuan</label>
                                             <select name="satuan" id="satuan" class="form-control">
@@ -52,32 +88,13 @@
                                                 <option value="tower">Tower</option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group mb-1 col-3">
-                                            <label for="">PT*</label>
-                                            <select name="id_pt" id="id_pt" class="form-control" required>
-                                                <option value="<?= $a['id_pt'] ?>" selected><?= $a['id_pt'] ?>
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group mb-1 col-3">
-                                            <label for="">Divisi</label>
-                                            <select name="divisi" id="divisi" class="form-control" required>
-                                                <option value="<?= $a['id_divisi'] ?>" selected><?= $a['id_divisi'] ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-2">
-                                            <label for="">User</label>
-                                            <input type="text" class="form-control" id="user" name="user" value="<?= $a['user'] ?>" placeholder="User">
-                                        </div>
-                                        <div class="form-group mb-1 col-2">
-                                            <label for="">Lokasi</label>
-                                            <input type="text" class="form-control" id="lokasi" name="lokasi" value="<?= $a['lokasi'] ?>" placeholder="Lokasi">
-                                        </div>
-                                        <div class="form-group col-2">
+                                        <div class="form-group col-3">
                                             <label for="">No PO</label>
                                             <input type="text" class="form-control" id="no_po" name="no_po" value="<?= $a['no_po'] ?>" placeholder="No PO">
+                                        </div>
+                                        <div class="form-group mb-1 col-3">
+                                            <label for="">Lokasi</label>
+                                            <input type="text" class="form-control" id="lokasi" name="lokasi" value="<?= $a['lokasi'] ?>" placeholder="Lokasi">
                                         </div>
                                     </div>
 
@@ -234,7 +251,7 @@
                                     <div class="modal-footer">
                                         <a class="btn btn-secondary" href="<?= base_url('DataAssets') ?>"><i class="mdi mdi-arrow-left"></i> Back to Data
                                             Assets</a>
-                                        <!-- <button type="submit" class="btn btn-primary">Save</button> -->
+                                        <button type="submit" class="btn btn-primary">Save</button>
                                     </div>
                                 <?php endforeach; ?>
                             </form>
@@ -252,9 +269,98 @@
                     $('.maintenance').find('#tgl_mulai_maintenan').attr('required', '');
                 });
 
+                // In your Javascript (external .js resource or <script> tag)
+                $("#select2_user").select2({
+                    // placeholder: "Buscar y Selecionar",
+                    ajax: {
+                        url: "<?php echo site_url('DataAssets/select2_get_user') ?>",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                nama: params.term, // search term
+                            };
+                        },
+                        processResults: function(data) {
+                            var results = [];
+                            $.each(data, function(index, item) {
+                                results.push({
+                                    id: item.id,
+                                    text: item.nama
+                                });
+                            });
+                            return {
+                                results: results
+                            };
+                        }
+                    }
+                }).on('select2:select', function(evt) {
+                    // var selected = evt.params.data;
+                    var data = $("#select2_user option:selected").val();
+                    var nama = $("#select2_user option:selected").text();
+
+                    $('#user').val(nama);
+                    // $('#id_user').val(data);
+                    // console.log(data);
+                    get_dev_jab(data);
+
+                });
+
+                function get_dev_jab(data) {
+                    $.ajax({
+                        url: "<?php echo site_url('DataAssets/get_dev_jab'); ?>",
+                        method: "POST",
+                        data: {
+                            id_user: data
+                        },
+                        async: true,
+                        dataType: 'json',
+                        success: function(data) {
+
+                            console.log(data);
+                            var html = '';
+                            var html_1 = '';
+                            var i;
+
+                            html = '<option value="' + data.depar + '">' + data.depar + '</option>'; // divisi/depar
+                            html_1 = '<option value="' + data.jabatan + '">' + data.jabatan + '</option>';
+
+                            $('#divisi').html(html); // divisi/depar
+                            $('#jabatan').html(html_1);
+
+                        }
+                    });
+                }
+
+                // cari dept
+                var divisi = $('#divisi').val();
+                $.ajax({
+                    url: "<?php echo site_url('dataAssets/get_dept'); ?>",
+                    method: "POST",
+                    data: {
+                        // id_pt: id_pt
+                    },
+                    async: true,
+                    dataType: 'json',
+                    success: function(data) {
+
+                        var html = '';
+                        var i;
+                        for (i = 0; i < data.length; i++) {
+                            if (data[i].nama == divisi) {
+                                html += '<option value="' + data[i].nama + '" selected>' + data[i].nama + '</option>';
+                            } else {
+                                html += '<option value="' + data[i].nama + '">' + data[i].nama + '</option>';
+                            }
+                        }
+                        $('#divisi').html(html);
+
+                    }
+                });
+
                 //pertama kali muncul Devisi
                 var id_pt = $('#id_pt').val();
-                var id_divisi = $('#divisi').val();
+                var jabatan = $('#jabatan').val();
                 $.ajax({
                     url: "<?php echo site_url('dataAssets/select_get_divisi'); ?>",
                     method: "POST",
@@ -267,14 +373,15 @@
 
                         var html = '';
                         var i;
+                        html += '<option value="' + jabatan + '" selected>' + jabatan + '</option>';
                         for (i = 0; i < data.length; i++) {
-                            if (data[i].id_divisi == id_divisi) {
-                                html += '<option value=' + data[i].id_divisi + ' selected>' + data[i].nama_divisi + '</option>';
+                            if (data[i].nama_divisi == divisi) {
+                                html += '<option value="' + data[i].nama_divisi + '" selected>' + data[i].nama_divisi + '</option>';
                             } else {
-                                html += '<option value=' + data[i].id_divisi + '>' + data[i].nama_divisi + '</option>';
+                                html += '<option value="' + data[i].nama_divisi + '">' + data[i].nama_divisi + '</option>';
                             }
                         }
-                        $('#divisi').html(html);
+                        $('#jabatan').html(html);
 
                     }
                 });
@@ -294,9 +401,9 @@
                         var i;
                         for (i = 0; i < data.length; i++) {
                             if (data[i].id_pt == id_pt) {
-                                html += '<option value=' + data[i].id_pt + ' selected>' + data[i].nama_pt + '</option>';
+                                html += '<option value="' + data[i].id_pt + '" selected>' + data[i].nama_pt + '</option>';
                             } else {
-                                html += '<option value=' + data[i].id_pt + '>' + data[i].nama_pt + '</option>';
+                                // html += '<option value=' + data[i].id_pt + '>' + data[i].nama_pt + '</option>';
                             }
                         }
                         $('#id_pt').html(html);
@@ -307,14 +414,14 @@
                 $('#kondisi').change(function() {
                     var kondisi = $(this).val();
 
-                    $('#no_ba').val('');
+                    // $('#no_ba').val('');
 
                     if (kondisi == 0) {
                         $('.sikon').find('#no_ba').removeClass('bg-light');
                         $('.sikon').find('#no_ba').removeAttr('disabled', '');
                     } else {
-                        $('.sikon').find('#no_ba').addClass('bg-light');
-                        $('.sikon').find('#no_ba').attr('disabled', '');
+                        // $('.sikon').find('#no_ba').addClass('bg-light');
+                        // $('.sikon').find('#no_ba').attr('disabled', '');
                     }
                 });
 
@@ -354,7 +461,7 @@
                         var html = '';
                         var i;
                         for (i = 0; i < data.length; i++) {
-                            html += '<option value=' + data[i].id_divisi + '>' + data[i].nama_divisi + '</option>';
+                            html += '<option value="' + data[i].id_divisi + '">' + data[i].nama_divisi + '</option>';
                         }
                         $('#divisi').html(html);
 

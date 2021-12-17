@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="form-group mb-1 col-3">
                                         <!-- blm di tambahkan -->
-                                        <label for="">Jabatan*</label>
+                                        <label for="">Jabatan</label>
                                         <select name="jabatan" id="jabatan" class="form-control">
                                             <option value="" selected disabled>- Select Jabatan - </option>
                                         </select>
@@ -301,8 +301,8 @@
                             var html_1 = '';
                             var i;
 
-                            html = '<option value=' + data.depar + '>' + data.depar + '</option>'; // divisi/depar
-                            html_1 = '<option value=' + data.jabatan + '>' + data.jabatan + '</option>';
+                            html = '<option value="' + data.depar + '">' + data.depar + '</option>'; // divisi/depar
+                            html_1 = '<option value="' + data.jabatan + '">' + data.jabatan + '</option>';
 
                             $('#divisi').html(html); // divisi/depar
                             $('#jabatan').html(html_1);
@@ -332,10 +332,10 @@
                             var html = '';
                             var i;
 
-                            html += '<option value="">-</option>';
+                            html += '<option value="-">-</option>';
 
                             for (i = 0; i < data.length; i++) {
-                                html += '<option value=' + data[i].nama_divisi + '>' + data[i].nama_divisi + '</option>';
+                                html += '<option value="' + data[i].nama_divisi + '">' + data[i].nama_divisi + '</option>';
                             }
                             $('#jabatan').html(html);
 

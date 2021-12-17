@@ -244,7 +244,8 @@ class DataAssets extends CI_Controller
             'serial_number' => $this->input->post('serial_number'),
             'satuan' => $this->input->post('satuan'),
             'id_pt' => $this->input->post('id_pt'),
-            'id_divisi' => $this->input->post('divisi'),
+            'divisi' => $this->input->post('divisi'),
+            'jabatan' => $this->input->post('jabatan'),
             'user' => $this->input->post('user'),
             'lokasi' => $this->input->post('lokasi'),
             'no_po' => $this->input->post('no_po'),
@@ -508,6 +509,12 @@ class DataAssets extends CI_Controller
         $id_user = $this->input->post('id_user');
 
         $data = $this->M_data_assets->get_dev_jab($id_user);
+        echo json_encode($data);
+    }
+
+    public function get_dept()
+    {
+        $data = $this->M_data_assets->dept();
         echo json_encode($data);
     }
 
