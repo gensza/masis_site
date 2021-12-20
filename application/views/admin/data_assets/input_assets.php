@@ -344,11 +344,11 @@
                 });
 
                 $('#category').change(function() {
+
                     var id_qty = $(this).val();
 
                     $('#merk_monitor, #sn_monitor, #merk_keyboard, #sn_keyboard, #merk_mouse, #sn_mouse').val('');
 
-                    console.log(id_qty);
                     if (id_qty == 18) {
                         $('.form_mokeymo').find('#merk_monitor, #sn_monitor, #merk_keyboard,#sn_keyboard, #merk_mouse, #sn_mouse').removeClass('bg-light');
                         $('.form_mokeymo').find('#merk_monitor, #sn_monitor, #merk_keyboard,#sn_keyboard, #merk_mouse, #sn_mouse').removeAttr('disabled', '');
@@ -356,7 +356,51 @@
                         $('.form_mokeymo').find('#merk_monitor, #sn_monitor, #merk_keyboard,#sn_keyboard, #merk_mouse, #sn_mouse').addClass('bg-light');
                         $('.form_mokeymo').find('#merk_monitor, #sn_monitor, #merk_keyboard,#sn_keyboard, #merk_mouse, #sn_mouse').attr('disabled', '');
                     }
+
+                    get_no_urut_koset();
+
                 });
+
+                function get_no_urut_koset() {
+                    // generate kode
+                    $.ajax({
+                        url: "<?php echo site_url('DataAssets/get_no_urut_koset'); ?>",
+                        method: "POST",
+                        data: {
+
+                        },
+                        async: true,
+                        dataType: 'json',
+                        success: function(data) {
+                            generate_koset(data);
+                        },
+                        error: function(response) {
+                            alert('KONEKSI TERPUTUS!');
+                        }
+                    });
+
+                }
+
+                function generate_koset(data) {
+                    console.log(data);
+                    // MSAL/2112/A/SITE/LP/0001
+
+                    var category = $('#category option:selected').text();
+
+                    if (category == 'LAPTOP') {
+                        ctgry = 'LPT';
+                    } else if (category == 'PC') {
+                        ctgry = 'PC';
+                    } else if (category == 'PRINTER') {
+                        ctgry = 'PNT';
+                    } else {
+                        ctgry = category;
+                    }
+
+                    var kode_assets = data.pt + '/' + data.thn + data.bln + '/' + 'A' + '/' + 'SITE' + '/' + ctgry + '/' + data.no_urut;
+
+                    $('#kode_asset').val(kode_assets);
+                }
 
 
                 $('#kondisi').change(function() {

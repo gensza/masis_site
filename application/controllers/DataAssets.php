@@ -322,21 +322,21 @@ class DataAssets extends CI_Controller
 
     public function addCategory()
     {
-        $this->form_validation->set_rules('category', 'Category', 'required|trim|is_unique[tb_qty_assets.category]', [
-            'is_unique' => 'This category has already exist!'
-        ]);
-        if ($this->form_validation->run() == false) {
-            $this->qtyAssets();
-        } else {
-            $data = [
-                'category' => htmlspecialchars($this->input->post('category', true)),
-                'qty' => 0,
-                'tersedia' => 0
-            ];
-            $this->db_masis_pt->insert('tb_qty_assets', $data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New category added!</div>');
-            redirect('DataAssets/qtyAssets');
-        }
+        // $this->form_validation->set_rules('category', 'Category', 'required|trim|is_unique[tb_qty_assets.category]', [
+        //     'is_unique' => 'This category has already exist!'
+        // ]);
+        // if ($this->form_validation->run() == false) {
+        //     $this->qtyAssets();
+        // } else {
+        // }
+        $data = [
+            'category' => htmlspecialchars($this->input->post('category', true)),
+            'qty' => 0,
+            'tersedia' => 0
+        ];
+        $this->db_masis_pt->insert('tb_qty_assets', $data);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New category added!</div>');
+        redirect('DataAssets/qtyAssets');
     }
 
     public function editCategory($id)
@@ -515,6 +515,30 @@ class DataAssets extends CI_Controller
     public function get_dept()
     {
         $data = $this->M_data_assets->dept();
+        echo json_encode($data);
+    }
+
+    public function get_no_urut_koset()
+    {
+        // MSAL/2112/A/PC/SITE/LP/0001
+        $query_ppo = "SELECT MAX(SUBSTRING(kode_assets, -4)) as max_urut from tb_assets";
+        $generate_ppo = $this->db_masis_pt->query($query_ppo)->row();
+        $noUrut = ($generate_ppo->max_urut);
+        $noUrut++;
+        $print = sprintf("%04s", $noUrut);
+
+        $pt = $this->session->userdata('app_pt');
+
+        $thn = substr(date('Y'), 2);
+        $bln = date('m');
+
+        $data = [
+            'no_urut' => $print,
+            'pt' => $pt,
+            'thn' => $thn,
+            'bln' => $bln,
+        ];
+
         echo json_encode($data);
     }
 
