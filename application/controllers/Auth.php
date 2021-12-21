@@ -70,8 +70,7 @@ class Auth extends CI_Controller
 			} else if ($data['get_tb_pt_central']['alias'] == 'PEAK') {
 				$pt_login = 'db_masis_peak';
 			} else if ($data['get_tb_pt_central']['alias'] == 'PSAM') {
-				// $pt_login = 'db_masis_psam';
-				redirect('Auth/blocked');
+				$pt_login = 'db_masis_psam';
 			} else if ($data['get_tb_pt_central']['alias'] == 'KPP') {
 				$pt_login = 'db_masis_kpp';
 			}
