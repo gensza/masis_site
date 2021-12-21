@@ -151,6 +151,12 @@ class DataAssets extends CI_Controller
             //     $pos = rand(0, strlen($kd) - 1);
             //     $string .= $pos;
             // }
+            if (empty($this->input->post('user'))) {
+                $nem_user = 'VACANT';
+            } else {
+                $nem_user = $this->input->post('user');
+            }
+
             $data = [
                 'qty_id' => $this->input->post('category'),
                 'kode_assets' => $this->input->post('kode_asset'),
@@ -160,7 +166,7 @@ class DataAssets extends CI_Controller
                 'id_pt' => $this->input->post('id_pt'),
                 'divisi' => $this->input->post('divisi'),
                 'jabatan' => $this->input->post('jabatan'),
-                'user' => $this->input->post('user'),
+                'user' => $nem_user,
                 'lokasi' => $this->input->post('lokasi'),
                 'no_po' => $this->input->post('no_po'),
                 'merk' => $this->input->post('merk'),
