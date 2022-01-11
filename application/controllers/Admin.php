@@ -43,9 +43,14 @@ class Admin extends CI_Controller
         $query = $this->db_masis_pt->get('tb_qty_assets');
         $data['qty'] = $query->row()->qty;
 
-        $this->db_masis_pt->select_sum('tersedia');
-        $query = $this->db_masis_pt->get('tb_qty_assets');
-        $data['tersedia'] = $query->row()->tersedia;
+        // $this->db_masis_pt->select_sum('tersedia');
+        // $query = $this->db_masis_pt->get('tb_qty_assets');
+        // $data['tersedia'] = $query->row()->tersedia;
+
+        $this->db_masis_pt->where('idle !=', 'on');
+        $this->db_masis_pt->or_where('idle ', NULL);
+        $this->db_masis_pt->from('tb_assets');
+        $data['terpakai'] = $this->db_masis_pt->count_all_results();
 
         $this->db_masis_pt->where('kondisi', 0);
         $this->db_masis_pt->from('tb_assets');

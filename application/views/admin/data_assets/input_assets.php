@@ -390,9 +390,39 @@
                     if (category == 'LAPTOP') {
                         ctgry = 'LPT';
                     } else if (category == 'PC') {
-                        ctgry = 'PC';
+                        ctgry = 'KPT';
                     } else if (category == 'PRINTER') {
                         ctgry = 'PNT';
+                    } else if (category == 'GADGET') {
+                        ctgry = 'GDG';
+                    } else if (category == 'UPS') {
+                        ctgry = 'UPS';
+                    } else if (category == 'SCANER') {
+                        ctgry = 'SNR';
+                    } else if (category == 'PROYEKTOR') {
+                        ctgry = 'PYT';
+                    } else if (category == 'SPAREPART') {
+                        ctgry = 'SRP';
+                    } else if (category == 'CCTV') {
+                        ctgry = 'CTV';
+                    } else if (category == 'VCLOUDPOINT') {
+                        ctgry = 'VDP';
+                    } else if (category == 'DRONE') {
+                        ctgry = 'DRN';
+                    } else if (category == 'FO') {
+                        ctgry = 'FBO';
+                    } else if (category == 'NETWORKING') {
+                        ctgry = 'NWK';
+                    } else if (category == 'SERVER') {
+                        ctgry = 'SRV';
+                    } else if (category == 'VOIP') {
+                        ctgry = 'VIP';
+                    } else if (category == 'PERALATAN') {
+                        ctgry = 'PAT';
+                    } else if (category == 'FINGERPRINT') {
+                        ctgry = 'FRP';
+                    } else if (category == 'TOOLKIT') {
+                        ctgry = 'TLK';
                     } else {
                         ctgry = category;
                     }

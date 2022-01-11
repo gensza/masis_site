@@ -60,12 +60,12 @@
                             </div>
                             <div class="col-6">
                                 <div class="text-right">
-                                    <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= $tersedia ?></span>
+                                    <h3 class="text-dark mt-1"><span data-plugin="counterup"><?= $terpakai ?></span>
                                     </h3>
                                 </div>
                             </div>
                         </div> <!-- end row-->
-                        <p class="text-muted mt-1 mb-0 text-truncate">Aset Tersedia</p>
+                        <p class="text-muted mt-1 mb-0 text-truncate">Aset Terpakai</p>
                     </div> <!-- end widget-rounded-circle-->
                 </div> <!-- end col-->
                 <div class="col-md-3 col-6">
@@ -244,7 +244,7 @@
                                     <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist">Category
                                     </th>
                                     <th scope="col" data-tablesaw-sortable-col data-tablesaw-sortable-default-col data-tablesaw-priority="3">Qty</th>
-                                    <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Tersedia</th>
+                                    <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Terpakai</th>
                                     <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Idle Assets</th>
                                     <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2">Asset Dipinjam</th>
                                 </tr>
@@ -254,7 +254,14 @@
                                     <tr>
                                         <td><?= $q['category'] ?></td>
                                         <td><?= $q['qty'] ?></td>
-                                        <td><?= $q['tersedia'] ?></td>
+                                        <td>
+                                            <?php
+                                            $result = "SELECT idle FROM tb_assets WHERE qty_id = $q[id_qty] AND (idle <> 'on'OR idle IS NULL)";
+                                            $count = $this->db_masis_pt->query($result)->num_rows();
+                                            // var_dump($count);
+                                            echo $count;
+                                            ?>
+                                        </td>
                                         <td>
                                             <?php
                                             $result = "SELECT COUNT(idle) as idle FROM tb_assets WHERE qty_id = $q[id_qty] AND idle = 'on'";

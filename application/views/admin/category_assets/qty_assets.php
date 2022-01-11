@@ -28,7 +28,7 @@
                                         <th>No</th>
                                         <th>Category</th>
                                         <th>Total Assets</th>
-                                        <th>Asset Tersedia</th>
+                                        <th>Asset Terpakai</th>
                                         <th>Idle Assets</th>
                                         <th>Asset Dipinjam</th>
                                         <th>Opsi</th>
@@ -41,7 +41,14 @@
                                             <td><?= $no++  ?></td>
                                             <td><?= $qty['category'] ?></td>
                                             <td><?= $qty['qty'] ?></td>
-                                            <td><?= $qty['tersedia'] ?></td>
+                                            <td>
+                                                <?php
+                                                $result = "SELECT idle FROM tb_assets WHERE qty_id = $qty[id_qty] AND (idle <> 'on'OR idle IS NULL)";
+                                                $count = $this->db_masis_pt->query($result)->num_rows();
+                                                // var_dump($count);
+                                                echo $count;
+                                                ?>
+                                            </td>
                                             <td>
                                                 <?php
                                                 $result = "SELECT COUNT(idle) as idle FROM tb_assets WHERE qty_id = $qty[id_qty] AND idle = 'on'";
