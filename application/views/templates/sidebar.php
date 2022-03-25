@@ -100,3 +100,5 @@ $date_today = date('Y-m-d');
 
 <!-- // menjalankan scrip js -->
 <script src="<?= base_url() ?>/assets/js/vendor.min.js"></script>
+<!-- select2 -->
+<script src="<?= base_url() ?>/assets/js/select2.min.js"></script>

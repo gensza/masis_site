@@ -209,6 +209,10 @@ class DataAssets extends CI_Controller
                 $this->db_masis_pt->where('id_qty', $data['qty_id']);
                 $this->db_masis_pt->update('tb_qty_assets');
             }
+
+            // buat qrcode
+            $this->qrcode($data['kode_assets']);
+
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New assets added!</div>');
             redirect('DataAssets');
         }
@@ -431,6 +435,8 @@ class DataAssets extends CI_Controller
 
     function get_data_assets()
     {
+        $pt_qr = $this->session->userdata('app_pt');
+
         $list = $this->M_data_assets->get_datatables();
         $data = array();
         $no = $_POST['start'];
@@ -491,6 +497,7 @@ class DataAssets extends CI_Controller
             $row[] = $field->user;
             $row[] = $kondisi;
             $row[] = $status;
+            $row[] = '<p><img style="width: 70px;" src="./assets/qrcode/data_asset/'.$pt_qr.'/' . $field->id_assets . '.png"></p>';
             $row[] = $aksi;
 
             $data[] = $row;
@@ -548,6 +555,98 @@ class DataAssets extends CI_Controller
         ];
 
         echo json_encode($data);
+    }
+
+    function qrcode($koset)
+    {
+        $this->load->library('Ciqrcode');
+        // header("Content-Type: image/png");
+        $pt_qr = $this->session->userdata('app_pt');
+
+        $query = "SELECT MAX(id_assets) as id FROM tb_assets WHERE kode_assets = '$koset'";
+        $result = $this->db_masis_pt->query($query)->row();
+
+        $config['cacheable']    = false; //boolean, the default is true
+        $config['cachedir']     = './assets/'; //string, the default is application/cache/
+        $config['errorlog']     = './assets/'; //string, the default is application/logs/
+        $config['imagedir']     = './assets/qrcode/data_asset/'.$pt_qr.'/'; //direktori penyimpanan qr code
+        $config['quality']      = true; //boolean, the default is true
+        $config['size']         = '1024'; //interger, the default is 1024
+        $config['black']        = array(224, 255, 255); // array, default is array(255,255,255)
+        $config['white']        = array(70, 130, 180); // array, default is array(0,0,0)
+        $this->ciqrcode->initialize($config);
+
+        $image_name = $result->id . '.png'; //buat name dari qr code
+
+        // $params['data'] = site_url('lpb/cetak/'.$no_lpb.'/'.$id); //data yang akan di jadikan QR CODE
+        $params['data'] = $koset; //data yang akan di jadikan QR CODE
+        $params['level'] = 'H'; //H=High
+        $params['size'] = 10;
+        $params['savename'] = FCPATH . $config['imagedir'] . $image_name; //simpan image QR CODE ke folder
+        $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+    }
+
+    public function cetak_qrcode()
+    {
+        $dompdf = new Dompdf();
+
+        // table
+        $this->db_masis_pt->select('tb_assets.id_assets, tb_assets.kode_assets, tb_qty_assets.category, tb_assets.serial_number, tb_assets.merk, tb_assets.lokasi, tb_assets.no_po');
+        $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+        $this->db_masis_pt->from('tb_assets');
+        // $this->db_masis_pt->where('id_assets <', 100);
+
+        // if ($data['data_post']['pilih_pt'] != 'Y') {
+        //     $this->db_masis_pt->where('tb_assets.id_pt', $data['data_post']['pilih_pt']);
+        // }
+        if ($this->uri->segment('3') != 'Y') {
+            $this->db_masis_pt->where('qty_id', $this->uri->segment('3'));
+        }
+        if ($this->uri->segment('4') != 'Y') {
+            $this->db_masis_pt->where('kondisi', $this->uri->segment('4'));
+        }
+        if ($this->uri->segment('5') != 'Y') {
+            $this->db_masis_pt->where('id_divisi', $this->uri->segment('5'));
+        }
+        if ($this->uri->segment('6') == 'on') {
+            $this->db_masis_pt->where('idle', $this->uri->segment('6'));
+        }
+        if ($this->uri->segment('7') != 'Y') {
+            $this->db_masis_pt->where('status_unit', $this->uri->segment('7'));
+        }
+
+        $this->db_masis_pt->order_by('id_assets', 'DESC');
+        $data['data_assets'] = $this->db_masis_pt->get()->result_array();
+
+        foreach ($data['data_assets'] as $d) {
+            $this->qrcode($d['kode_assets']);
+            // echo $d['id_assets'];
+        }
+
+        //test
+        $html = $this->load->view('admin/report_assets_qrcode', $data, true);
+        $dompdf->load_html($html);
+        $dompdf->set_paper('A4', 'Potrait');
+        $dompdf->render();
+        $dompdf->output();
+        $dompdf->stream('Assets-report-QRCODE.pdf', array('Attachment' => false));
+    }
+
+    public function cetakExcel()
+    {
+        // table
+        $this->db_masis_pt->select('*');
+        $this->db_masis_pt->from('tb_assets');
+        $this->db_masis_pt->join('tb_qty_assets', 'tb_qty_assets.id_qty = tb_assets.qty_id', 'left');
+        $this->db_masis_pt->join('tb_pt', 'tb_pt.id_pt = tb_assets.id_pt', 'left');
+        $this->db_masis_pt->order_by('id_assets', 'DESC');
+        $data['data_assets'] = $this->db_masis_pt->get()->result_array();
+        // $data = '';
+        // var_dump($data['data_assets']);
+        // die;
+
+        //test
+        $this->load->view('admin/report_assets_excel', $data);
     }
 
     // public function filterDataAssets()

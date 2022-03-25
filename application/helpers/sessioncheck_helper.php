@@ -17,6 +17,8 @@ function check_db_pt()
             $db_pt = 'kpp';
       } elseif ($session_db_pt == 'dev') {
             $db_pt = 'dev';
+      } elseif ($session_db_pt == 'wcju') {
+            $db_pt = 'wcju';
       }
       return $db_pt;
 }

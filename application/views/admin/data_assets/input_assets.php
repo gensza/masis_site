@@ -54,10 +54,18 @@
                                     <div class="form-group col-3">
                                         <label for="">User</label>
                                         <input type="hidden" name="user" id="user">
-                                        <select class="form-control" id="select2_user" name="select2_user">
-                                            <option value="" selected>- Select User - </option>
-                                        </select>
-                                        <!-- <input type="text" class="form-control" id="user" name="user" placeholder="User"> -->
+                                        <?php if ($this->session->userdata('app_pt') == 'WCJU') {
+                                        ?>
+                                            <input type="text" class="form-control" id="user" name="user" placeholder="User">
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <select class="form-control" id="select2_user" name="select2_user">
+                                                <option value="" selected>- Select User - </option>
+                                            </select>
+                                        <?php
+                                        } ?>
+
                                     </div>
                                     <div class="form-group mb-1 col-3">
                                         <label for="">Divisi/Department*</label>

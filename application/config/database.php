@@ -227,6 +227,28 @@ $db['db_masis_kpp'] = array(
 	'save_queries' => TRUE
 );
 
+$db['db_masis_wcju'] = array(
+	'dsn'	=> '',
+	'hostname' => '192.168.1.231',
+	'username' => 'mis',
+	'password' => 'msaljkt@88',
+	'database' => 'db_masis_wcju',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
 $db['db_masis_psam'] = array(
 	'dsn'	=> '',
 	'hostname' => '192.168.1.231',
@@ -338,6 +360,28 @@ $db['msalgrou_personalia_psam'] = array(
 );
 
 $db['msalgrou_personalia_msal'] = array(
+	'dsn'	=> '',
+	'hostname' => '192.168.1.231',
+	'username' => 'mis',
+	'password' => 'msaljkt@88',
+	'database' => 'msalgrou_personalia',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['msalgrou_personalia_wcju'] = array(
 	'dsn'	=> '',
 	'hostname' => '192.168.1.231',
 	'username' => 'mis',

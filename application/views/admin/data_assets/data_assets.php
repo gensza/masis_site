@@ -43,6 +43,7 @@
                                         <th>User</th>
                                         <th>Kondisi</th>
                                         <th>Status</th>
+                                        <th>QR-CODE</th>
                                         <th width="150px">Opsi</th>
                                     </tr>
                                 </thead>
@@ -154,6 +155,8 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-sm btn-danger" onclick="cetak_report()">Cetak Report</button>
+                            <button type="button" class="btn btn-sm btn-warning" style="float: right;" onclick="cetak_qrcode()">Cetak QR-Code</button>
+                            <button type="button" class="btn btn-sm btn-success" style="float: right;" onclick="cetak_excel()">Cetak Excel</button>
                         </div>
                     </form>
                 </div>
@@ -226,6 +229,29 @@
 
     <script>
         var table;
+
+        function cetak_excel() {
+            var url = '<?php echo base_url('DataAssets/cetakExcel'); ?>';
+
+            window.open(url);
+
+        }
+
+        function cetak_qrcode() {
+
+            var pilih_category = $('#pilih_category').val();
+            var pilih_kondisi = $('#pilih_kondisi').val();
+            var divisi = $('#divisi').val();
+            var cb_idle;
+            $('input[name="cb_idle"]:checked').each(function() {
+                cb_idle = $(this).val()
+            });
+            var status_unit = $('#status_unit').val();
+            var url = '<?php echo base_url('DataAssets/cetak_qrcode/') ?>' + pilih_category + '/' + pilih_kondisi + '/' + divisi + '/' + cb_idle + '/' + status_unit;
+
+            window.open(url);
+
+        }
 
         function cetak_report() {
             $('#modalReport').modal('hide');

@@ -15,6 +15,7 @@ class Auth extends CI_Controller
 		$this->db_masis_peak = $this->load->database('db_masis_peak', true);
 		$this->db_masis_psam = $this->load->database('db_masis_psam', true);
 		$this->db_masis_kpp = $this->load->database('db_masis_kpp', true);
+		$this->db_masis_wcju = $this->load->database('db_masis_wcju', true);
 		$this->db_masis_dev = $this->load->database('db_masis_dev', true);
 
 		// if (!$this->session->userdata('userlogin')) {
@@ -72,6 +73,8 @@ class Auth extends CI_Controller
 				$pt_login = 'db_masis_psam';
 			} else if ($data['get_tb_pt_central']['alias'] == 'KPP') {
 				$pt_login = 'db_masis_kpp';
+			} else if ($data['get_tb_pt_central']['alias'] == 'WCJU') {
+				$pt_login = 'db_masis_wcju';
 			}
 		}
 
