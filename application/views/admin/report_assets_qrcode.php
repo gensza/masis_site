@@ -26,7 +26,7 @@ $pt_qr = $this->session->userdata('app_pt');
         <body>
             <?php foreach ($data_assets as $d) : ?>
             <tr>
-                <td><img style="width: 100px;" src="./assets/qrcode/data_asset/<?php $pt_qr ?>/<?= $d['id_assets'] ?>.png"></td>
+                <td><img style="width: 100px;" src="./assets/qrcode/data_asset/<?= $pt_qr ?>/<?= $d['id_assets'] ?>.png"></td>
                 <td>
                    Kategori&nbsp;:&nbsp;<?= $d['category'] ?> <br> 
                    Kode aset&nbsp;:&nbsp;<?= $d['kode_assets'] ?> <br>
