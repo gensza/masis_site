@@ -16,7 +16,7 @@ $pt_qr = $this->session->userdata('app_pt');
 
 <p class="title"><b>REPORT DATA ASSETS QR-CODE</b></p><br>
 
-    <table style="margin-top: 20px;">
+    <table style="margin-top: 20px;" border="0">
         <head>
             <tr>
                 <th>QR</th>
@@ -35,6 +35,24 @@ $pt_qr = $this->session->userdata('app_pt');
                    Lokasi&nbsp;:&nbsp;<?= $d['lokasi'] ?> <br>
 
                 </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
             </tr>
             <?php endforeach; ?>
         </body>
